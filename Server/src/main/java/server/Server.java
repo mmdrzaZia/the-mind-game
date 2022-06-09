@@ -29,7 +29,7 @@ public class Server {
                 thread.start();;
             }
         }catch (IOException e){
-            //tODO : either the stack trace or close server is enough we can delete it later on.
+            //TODO : either the stack trace or close server is enough we can delete it later on.
             e.printStackTrace();
             closeServerSocket();
         }
