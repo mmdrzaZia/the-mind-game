@@ -1,4 +1,4 @@
 package logic.player;
 
-public interface Player {
+public abstract class Player {
 }
