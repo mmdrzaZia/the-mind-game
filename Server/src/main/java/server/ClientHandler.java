@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientHandler implements Runnable{
-    private static List<ClientHandler> clientHandlers = new ArrayList<>();
     // Socket for a connection, buffer reader and writer for receiving and sending data respectively.
     private Socket socket;
     private InputStreamReader inputStreamReader;
@@ -22,8 +21,10 @@ public class ClientHandler implements Runnable{
             this.inputStreamReader = new InputStreamReader(socket.getInputStream());
             this.outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
             //when a client connects their username is sent.
+            outputStreamWriter.write("Enter username : ");
             this.clientUsername = new BufferedReader(inputStreamReader).readLine();
-            clientHandlers.add(this);
+
+
         }catch (IOException e){
             e.printStackTrace();
             //tODO : should write a function that close everything.
