@@ -1,4 +1,9 @@
 package logic.player;
 
-public class Bot implements Player{
+public class Bot extends Player implements Runnable{
+
+    @Override
+    public void run() {
+
+    }
 }

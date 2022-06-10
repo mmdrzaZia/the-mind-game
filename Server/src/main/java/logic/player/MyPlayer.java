@@ -1,4 +1,4 @@
 package logic.player;
 
-public class MyPlayer implements Player{
+public class MyPlayer extends Player{
 }

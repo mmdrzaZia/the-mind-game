@@ -1,4 +1,11 @@
 *.iml
 .idea/
-.gradle
 gradle
+bin/**
+gen/**
+*.ipr
+*.iws
+.gradletasknamecache
+.gradle/
+build/
+bin/
