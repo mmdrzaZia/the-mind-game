@@ -6,12 +6,12 @@ import logic.player.MyPlayer;
 import java.io.*;
 import java.net.Socket;
 
-
 public class ClientHandler implements Runnable{
     // Socket for a connection, buffer reader and writer for receiving and sending data respectively.
     private Socket socket;
     private BufferedReader bufferedReader;
     private PrintWriter printWriter;
+    private Game game;
 
     public ClientHandler(Socket socket) {
         System.out.println("new client handler created.");
@@ -30,9 +30,30 @@ public class ClientHandler implements Runnable{
     public void run() {
         if (wantsToPlayGame()){
             MyPlayer myPlayer = new MyPlayer();
-            Game game = new Game(myPlayer , numberOfBots());
+            game = new Game(myPlayer , numberOfBots());
+            if (wantsToStartTheGame()){
+                //game.start();
+            }
         }
     }
+
+    public void sendState(){
+    }
+
+    private boolean wantsToStartTheGame() {
+        try {
+            sendMessage("Do you want to start?(y/n)");
+            String res = bufferedReader.readLine();
+            if (res.equals("y")) {
+                return true;
+            }else {
+                return wantsToPlayGame();
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }return wantsToPlayGame();
+    }
+
     private boolean wantsToPlayGame(){
         try {
             sendMessage("Do you want to play the mind-game?(y/n)");
