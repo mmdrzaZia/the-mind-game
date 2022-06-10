@@ -1,16 +1,13 @@
 package client;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class Client implements Runnable{
-    private String username;
     private Socket socket;
-    private InputStreamReader inputStreamReader;
-    private OutputStreamWriter outputStreamWriter;
+    private BufferedReader bufferedReader;
+    private PrintWriter printWriter;
 
     public Client(){
         init();
@@ -19,10 +16,28 @@ public class Client implements Runnable{
     private void init() {
         try {
             socket = new Socket("localhost" , 8080);
-            inputStreamReader = new InputStreamReader(socket.getInputStream());
-            outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            printWriter = new PrintWriter(socket.getOutputStream());
             while (socket.isConnected()){
-                System.out.println("server: "+inputStreamReader);
+                String message = bufferedReader.readLine();
+                System.out.println(message);
+                switch (message){
+                    case "Do you want to play the mind-game?(y/n)":
+                        printWriter.println(new Scanner(System.in).nextLine());
+                        printWriter.flush();
+                        break;
+                    case "How many bots you want to add?":
+                        printWriter.println(new Scanner(System.in).nextLine());
+                        printWriter.flush();
+                        break;
+                    case "Do you want to start?(y/n)":
+                        printWriter.println(new Scanner(System.in).nextLine());
+                        printWriter.flush();
+                        break;
+                    case "move":
+
+                        break;
+                }
             }
         }catch (IOException e){
             e.printStackTrace();

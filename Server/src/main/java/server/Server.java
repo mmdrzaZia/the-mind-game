@@ -9,7 +9,8 @@ public class Server {
     private ServerSocket serverSocket;
     public void initialize(){
         try{
-            ServerSocket serverSocket = new ServerSocket(8000);
+            ServerSocket serverSocket = new ServerSocket(8080);
+            System.out.println("Server is Running...");
             while (!serverSocket.isClosed()){
                 //Server socket will be closed in Client Handler.
                 Socket socket = serverSocket.accept();

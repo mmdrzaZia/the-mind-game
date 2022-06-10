@@ -5,7 +5,7 @@ import logic.player.MyPlayer;
 
 import java.io.*;
 import java.net.Socket;
-
+import com.google.gson.Gson;
 public class ClientHandler implements Runnable{
     // Socket for a connection, buffer reader and writer for receiving and sending data respectively.
     private Socket socket;
@@ -31,19 +31,23 @@ public class ClientHandler implements Runnable{
         if (wantsToPlayGame()){
             MyPlayer myPlayer = new MyPlayer();
             game = new Game(myPlayer , numberOfBots());
+            sendMessage("Game Created");
             if (wantsToStartTheGame()){
                 //game.start();
             }
         }
     }
 
-    public void sendState(){
+    public static void sendState(){
+        Gson gson = new Gson();
+        String message;
     }
 
     private boolean wantsToStartTheGame() {
         try {
             sendMessage("Do you want to start?(y/n)");
             String res = bufferedReader.readLine();
+            System.out.println("client: " + res);
             if (res.equals("y")) {
                 return true;
             }else {
@@ -58,6 +62,7 @@ public class ClientHandler implements Runnable{
         try {
             sendMessage("Do you want to play the mind-game?(y/n)");
             String res = bufferedReader.readLine();
+            System.out.println("client " + res);
             if (res.equals("y")) {
                 return true;
             }else {
