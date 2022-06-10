@@ -11,6 +11,8 @@ public class Game {
     private MyPlayer myPlayer;
     private GameDeck gameDeck;
     private List<Player> players;
+    private int round;
+
     public Game(MyPlayer myPlayer, int numberOfBots) {
         this.myPlayer = myPlayer;
         this.gameDeck = new GameDeck();
