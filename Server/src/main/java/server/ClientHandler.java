@@ -33,14 +33,15 @@ public class ClientHandler implements Runnable{
             game = new Game(myPlayer , numberOfBots());
             sendMessage("Game Created");
             if (wantsToStartTheGame()){
-                //game.start();
+                game.play();
             }
         }
     }
 
-    public static void sendState(){
+    public void sendState(){
         Gson gson = new Gson();
-        String message;
+        String message = gson.toJson(game.getState());
+        sendMessage("state :" + message);
     }
 
     private boolean wantsToStartTheGame() {

@@ -7,12 +7,12 @@ import logic.player.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game {
+public class Game{
     private MyPlayer myPlayer;
     private GameDeck gameDeck;
     private List<Player> players;
     private State gameState;
-    private int round = 1;
+    private int round;
     private int numberOfBots;
     private boolean stateIsChanged;
 
@@ -24,7 +24,7 @@ public class Game {
         this.players = new ArrayList<>();
         this.players.add(0 , myPlayer);
         this.numberOfBots = numberOfBots;
-        runBots();
+        round = 1;
     }
 
     protected void runBots () {
@@ -42,7 +42,11 @@ public class Game {
         return stateIsChanged;
     }
 
-    //game.play()
+
+
+    public void play(){
+        runBots();
+    }
     //game.playRound()
     //game.nextRound()
    public State getState(){
