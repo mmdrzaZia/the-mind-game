@@ -32,6 +32,7 @@ public class GameDeck {
             deck.set(i , temp);
         }
     }
+    //private dealCard(int Round , List<Player> alivePlayers)
 }
 
 
