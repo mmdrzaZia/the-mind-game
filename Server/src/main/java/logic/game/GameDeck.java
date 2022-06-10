@@ -33,6 +33,9 @@ public class GameDeck {
         }
     }
 
+    public Stack<Card> getDownCards() {
+        return downCards;
+    }
 
     //private void dealCard(int Round , List<Player> alivePlayers)
 }
