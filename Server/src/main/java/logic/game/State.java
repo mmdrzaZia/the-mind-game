@@ -37,14 +37,6 @@ public class State {
         this.downCards = downCards;
     }
 
-    public void setNumberOfHearts(HashMap<Player, Integer> numberOfHearts) {
-        this.numberOfHearts = numberOfHearts;
-    }
-
-    public void setNumberOfCards(HashMap<Player, Integer> numberOfCards) {
-        this.numberOfCards = numberOfCards;
-    }
-
     public HashMap<Player, Integer> getNumberOfHearts() {
         return numberOfHearts;
     }
