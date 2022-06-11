@@ -35,7 +35,12 @@ public class Client implements Runnable{
                         printWriter.flush();
                         break;
                     case "move":
-
+                        printWriter.println(new Scanner(System.in).nextLine());
+                        printWriter.flush();
+                        break;
+                    case "name?":
+                        printWriter.println(new Scanner(System.in).nextLine());
+                        printWriter.flush();
                         break;
                 }
             }

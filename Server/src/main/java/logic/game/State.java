@@ -19,6 +19,16 @@ public class State {
         numberOfCards = new HashMap<>();
     }
 
+    @Override
+    public String toString() {
+        return '{' +
+                "realPlayerHand=" + realPlayerHand +
+                ", downCards=" + downCards +
+                ", numberOfHearts=" + numberOfHearts +
+                ", numberOfCards=" + numberOfCards +
+                '}';
+    }
+
     public void setRealPlayerHand(ArrayList<Card> realPlayerHand) {
         this.realPlayerHand = realPlayerHand;
     }

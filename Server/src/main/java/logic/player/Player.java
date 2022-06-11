@@ -10,6 +10,7 @@ public abstract class Player {
     protected int numberOfHearts;
     protected int numberOfCards;
     protected boolean isAlive;
+    protected String name;
 
     public void setNumberOfHearts (int numberOfPlayers) {
         numberOfHearts = numberOfPlayers;

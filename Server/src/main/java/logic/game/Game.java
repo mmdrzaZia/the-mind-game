@@ -12,6 +12,7 @@ public class Game{
     private GameDeck gameDeck;
     private List<Player> players;
     private State gameState;
+    private GameStatus status;
     private int round;
     private int numberOfBots;
     private boolean stateIsChanged;
@@ -24,6 +25,8 @@ public class Game{
         this.players = new ArrayList<>();
         this.players.add(0 , myPlayer);
         this.numberOfBots = numberOfBots;
+        this.status = GameStatus.PAUSED;
+        this.stateIsChanged = true; // must be false
         round = 1;
     }
 
@@ -45,6 +48,7 @@ public class Game{
 
 
     public void play(){
+        this.status = GameStatus.RUNNING;
         runBots();
     }
     //game.playRound()
@@ -61,4 +65,19 @@ public class Game{
         return gameState;
    }
 
+    public void setStateIsChanged(boolean stateIsChanged) {
+        this.stateIsChanged = stateIsChanged;
+    }
+
+    public GameStatus getStatus() {
+        return status;
+    }
+
+    public void makeMove(String move) {
+    }
+
+    public boolean moveIsValid(String move) {
+
+        return true;
+    }
 }

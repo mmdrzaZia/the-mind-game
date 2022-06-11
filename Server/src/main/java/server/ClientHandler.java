@@ -1,6 +1,7 @@
 package server;
 
 import logic.game.Game;
+import logic.game.GameStatus;
 import logic.player.MyPlayer;
 
 import java.io.*;
@@ -28,13 +29,36 @@ public class ClientHandler implements Runnable{
 
     @Override
     public void run() {
-        if (wantsToPlayGame()){
-            MyPlayer myPlayer = new MyPlayer();
-            game = new Game(myPlayer , numberOfBots());
-            sendMessage("Game Created");
-            if (wantsToStartTheGame()){
-                game.play();
+        try {
+
+            if (wantsToPlayGame()) {
+                sendMessage("name?");
+                MyPlayer myPlayer = new MyPlayer(bufferedReader.readLine());
+                game = new Game(myPlayer, numberOfBots());
+                sendMessage("Game Created");
+                if (wantsToStartTheGame()) {
+                    String move;
+                    game.play();
+                    while (game.getStatus() == GameStatus.RUNNING) {
+                        if (game.isStateIsChanged()) {
+                            sendMessage("move");
+                            //TODO:
+                            move = bufferedReader.readLine();
+                            System.out.println("client: " + move);
+                            if (game.moveIsValid(move)){
+                                game.makeMove(move);
+                            }else {
+                                sendMessage("move was not valid");
+                                sendMessage("move");
+                            }
+                            sendState();
+                            game.setStateIsChanged(false);
+                        }
+                    }
+                }
             }
+        }catch (IOException e){
+            e.printStackTrace();
         }
     }
 
