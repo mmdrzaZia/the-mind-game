@@ -12,9 +12,6 @@ public class Client implements Runnable{
     private BufferedReader bufferedReader;
     private PrintWriter printWriter;
 
-    public Client(){
-        init();
-    }
 
     private void init() {
         try {
