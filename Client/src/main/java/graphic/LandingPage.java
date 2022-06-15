@@ -22,10 +22,10 @@ public class LandingPage extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
         this.add(panel , BorderLayout.CENTER);
         panel.setLayout(null);
-        label.setBounds(520, 310,246,48);
-        button.setBounds(585,452,109,32);
+        label.setBounds(490, 320,246,48);
+        button.setBounds(585,400,109,32);
 
-        textField.setBounds(489,365,300,50);
+        textField.setBounds(489,365,300,30);
         textField.setBorder(null);
         textField.setHorizontalAlignment(SwingConstants.CENTER);
 

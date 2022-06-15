@@ -47,8 +47,9 @@ public class JoinOrCreatePage extends JFrame implements ActionListener {
 
     private void setNewGame(){
         createNewGameButton.addActionListener(this);
-        createNewGameButton.setVerticalAlignment(SwingConstants.CENTER);
-        createNewGameButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+        rightPanel.add(Box.createRigidArea(new Dimension(10 , 700)));
+        rightPanel.add(new JLabel("Join or Create Game: "));
+        rightPanel.add(Box.createRigidArea(new Dimension(10 , 30)));
         rightPanel.add(createNewGameButton);
     }
 
