@@ -32,6 +32,10 @@ public abstract class Player {
         return hand;
     }
 
+    public boolean isAlive() {
+        return isAlive;
+    }
+
     //playStrategy?????
 
     //checkIfAlive()

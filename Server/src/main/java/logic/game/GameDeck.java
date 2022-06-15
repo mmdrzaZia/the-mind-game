@@ -7,10 +7,19 @@ import java.util.Stack;
 public class GameDeck {
     private ArrayList<Card> deck;
     private Stack<Card> downCards;
+    private int numberOfStarCards = 2;
 
     public GameDeck(){
         setDeck();
         downCards = new Stack<>();
+    }
+
+    public int getNumberOfStarCards() {
+        return numberOfStarCards;
+    }
+
+    public void setNumberOfStarCards(int numberOfStarCards) {
+        this.numberOfStarCards = numberOfStarCards;
     }
 
     private void setDeck () {
@@ -36,6 +45,8 @@ public class GameDeck {
     public Stack<Card> getDownCards() {
         return downCards;
     }
+
+    //getCardsFromPlayer
 
     //private void dealCard(int Round , List<Player> alivePlayers)
 }
