@@ -30,32 +30,10 @@ public class ClientHandler implements Runnable{
     @Override
     public void run() {
         try {
-
-            if (wantsToPlayGame()) {
-                sendMessage("name?");
-                MyPlayer myPlayer = new MyPlayer(bufferedReader.readLine());
-                game = new Game(myPlayer, numberOfBots());
-                sendMessage("Game Created");
-                if (wantsToStartTheGame()) {
-                    String move;
-                    game.play();
-                    while (game.getStatus() == GameStatus.RUNNING) {
-                        if (game.isStateIsChanged()) {
-                            sendMessage("move");
-                            //TODO:
-                            move = bufferedReader.readLine();
-                            System.out.println("client: " + move);
-                            if (game.moveIsValid(move)){
-                                game.makeMove(move);
-                            }else {
-                                sendMessage("move was not valid");
-                                sendMessage("move");
-                            }
-                            sendState();
-                            game.setStateIsChanged(false);
-                        }
-                    }
-                }
+            while (true){
+                String command = bufferedReader.readLine();
+                if (command !=null)
+                System.out.println(command);
             }
         }catch (IOException e){
             e.printStackTrace();
@@ -68,44 +46,7 @@ public class ClientHandler implements Runnable{
         sendMessage("state :" + message);
     }
 
-    private boolean wantsToStartTheGame() {
-        try {
-            sendMessage("Do you want to start?(y/n)");
-            String res = bufferedReader.readLine();
-            System.out.println("client: " + res);
-            if (res.equals("y")) {
-                return true;
-            }else {
-                return wantsToPlayGame();
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-        }return wantsToPlayGame();
-    }
 
-    private boolean wantsToPlayGame(){
-        try {
-            sendMessage("Do you want to play the mind-game?(y/n)");
-            String res = bufferedReader.readLine();
-            System.out.println("client " + res);
-            if (res.equals("y")) {
-                return true;
-            }else {
-                return wantsToPlayGame();
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-        }return wantsToPlayGame();
-    }
-    private int numberOfBots(){
-        sendMessage("How many bots you want to add?");
-        try {
-            return Integer.parseInt(bufferedReader.readLine());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return numberOfBots();
-    }
 
     public void sendMessage(String message){
         printWriter.println(message);
