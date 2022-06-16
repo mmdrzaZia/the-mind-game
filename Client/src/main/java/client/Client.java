@@ -1,9 +1,11 @@
 package client;
 
-import graphic.*;
+import graphic.LandingPage;
+import graphic.LandingPageController;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Client implements Runnable{
     private Socket socket;
@@ -16,9 +18,8 @@ public class Client implements Runnable{
             socket = new Socket("localhost" , 8080);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             printWriter = new PrintWriter(socket.getOutputStream());
-            LandingPageController landingPageController = new LandingPageController(printWriter , bufferedReader);
+            LandingPageController landingPageController = new LandingPageController(printWriter,bufferedReader);
             LandingPage landingPage = new LandingPage(landingPageController);
-
         }catch (IOException e){
             e.printStackTrace();
         }
