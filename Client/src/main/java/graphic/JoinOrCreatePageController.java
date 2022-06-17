@@ -17,8 +17,10 @@ public class JoinOrCreatePageController extends Controller{
     public List<String> getCurrentGames(){
         // { host:"" , gameSize: , playerNeeded:  }
         try {
-            //String gamesStr = bufferedReader.readLine();
-            String gamesStr = "host-4-3/15-5-4/16-7-5/18-8-5/19-15-10";
+            sendMessageToServer("SEND_ME_WAITING_GAMES");
+            String gamesStr = bufferedReader.readLine();
+
+            gamesStr = "host-4-3/15-5-4/16-7-5/18-8-5/19-15-10";
             if (gamesStr !=null) {
                 String[] games = gamesStr.split("/");
                 return Arrays.asList(games);
@@ -30,7 +32,6 @@ public class JoinOrCreatePageController extends Controller{
     }
 
     public void createGame(Integer size){
-       sendMessageToServer("CREATED_GAME-"+size);
+       sendMessageToServer("CREATE_GAME-" + (size+1));
     }
-
 }

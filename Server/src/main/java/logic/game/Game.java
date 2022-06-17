@@ -9,30 +9,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game{
-    private MyPlayer myPlayer;
+    private MyPlayer host;
     private GameDeck gameDeck;
     private List<Player> players;
     private State gameState;
     private GameStatus status;
+    private int gameSize;
     private int round;
     private int numberOfBots;
-    private boolean stateIsChanged;
     private ClientHandler clientHandler;
     private Player playerWhoPlayedLastTime;
 
-    public Game(MyPlayer myPlayer, int numberOfBots, ClientHandler clientHandler) {
+    public Game(MyPlayer host, int gameSize, ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
-        this.myPlayer = myPlayer;
-        myPlayer.setNumberOfHearts(numberOfBots);
-        myPlayer.setNumberOfCards(round);
-        this.gameDeck = new GameDeck();
+        this.host = host;
+//        host.setNumberOfHearts(numberOfBots);
+//        host.setNumberOfCards(round);
+
         this.players = new ArrayList<>();
-        this.players.add(0 , myPlayer);
-        this.numberOfBots = numberOfBots;
-        this.status = GameStatus.PAUSED;
-        this.stateIsChanged = true; // must be false
-        round = 1;
+        this.players.add(0 , host);
+        this.gameSize = gameSize;
+        this.status = GameStatus.WAITING;
     }
+
+    private void initialize(){
+        this.gameDeck = new GameDeck();
+        this.round = 1;
+        if (players.size() != gameSize){
+            for (int i=0 ; i < gameSize-players.size();i++){
+                players.add(new Bot());
+            }
+        }
+        //gameDeck.dealHand(players , round);
+    }
+
+
+
 
     public Player getPlayerWhoPlayedLastTime() {
         return playerWhoPlayedLastTime;
@@ -53,9 +65,6 @@ public class Game{
         }
     }
 
-    public boolean isStateIsChanged() {
-        return stateIsChanged;
-    }
 
 
 
@@ -115,9 +124,9 @@ public class Game{
 
    public State getState(){
         gameState = new State();
-        gameState.setRealPlayerHand(myPlayer.getHand());
+        gameState.setRealPlayerHand(host.getHand());
         gameState.setDownCards(gameDeck.getDownCards());
-        gameState.getNumberOfHearts().put(myPlayer,myPlayer.getNumberOfHearts());
+        gameState.getNumberOfHearts().put(host, host.getNumberOfHearts());
         for (int i = 1; i < players.size(); i++) {
            gameState.getNumberOfCards().put(players.get(i),players.get(i).getNumberOfCards());
            gameState.getNumberOfHearts().put(players.get(i),players.get(i).getNumberOfHearts());
@@ -125,9 +134,6 @@ public class Game{
         return gameState;
    }
 
-    public void setStateIsChanged(boolean stateIsChanged) {
-        this.stateIsChanged = stateIsChanged;
-    }
 
     public GameStatus getStatus() {
         return status;
