@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 public class Controller {
+    protected String command;
     protected PrintWriter printWriter;
     protected BufferedReader bufferedReader;
 
@@ -25,4 +26,6 @@ public class Controller {
     public PrintWriter getPrintWriter() {
         return printWriter;
     }
+
+    public void readData(String command){}
 }

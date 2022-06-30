@@ -5,13 +5,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GamePanel extends JPanel implements ActionListener {
+public class JoinGamePanel extends JPanel implements ActionListener {
     private String hostId;
     private String gameSize;
     private String playersIn;
     private final JButton joinButton = new JButton("Join");
+    private final JoinOrCreatePageController controller;
 
-    public GamePanel(String hostName, String gameSize, String playersIn) {
+    public JoinGamePanel(String hostName, String gameSize, String playersIn , JoinOrCreatePageController controller) {
+        this.controller = controller;
         this.hostId = hostName;
         this.gameSize = gameSize;
         this.playersIn = playersIn;
@@ -32,7 +34,7 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == joinButton){
-            System.out.println("SALAM BADBAKHT");
+            controller.joinGame(Integer.parseInt(hostId));
         }
     }
 }

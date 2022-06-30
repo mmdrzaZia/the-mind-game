@@ -15,12 +15,10 @@ public class JoinOrCreatePageController extends Controller{
     //Takes the current Games from server.
     //tODO : server : getCurrent Games!
     public List<String> getCurrentGames(){
-        // { host:"" , gameSize: , playerNeeded:  }
         try {
             sendMessageToServer("SEND_ME_WAITING_GAMES");
             String gamesStr = bufferedReader.readLine();
-
-            gamesStr = "host-4-3/15-5-4/16-7-5/18-8-5/19-15-10";
+            System.out.println("Waiting games : "+gamesStr);
             if (gamesStr !=null) {
                 String[] games = gamesStr.split("/");
                 return Arrays.asList(games);
@@ -32,6 +30,10 @@ public class JoinOrCreatePageController extends Controller{
     }
 
     public void createGame(Integer size){
-       sendMessageToServer("CREATE_GAME-" + (size+1));
+       sendMessageToServer("CREATE_GAME-" + (size));
+    }
+
+    public void joinGame(int hostId){
+        sendMessageToServer("JOIN_GAME-"+hostId);
     }
 }

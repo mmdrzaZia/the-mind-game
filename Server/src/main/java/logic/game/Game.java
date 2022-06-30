@@ -3,7 +3,6 @@ package logic.game;
 import logic.player.Bot;
 import logic.player.MyPlayer;
 import logic.player.Player;
-import server.ClientHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +15,13 @@ public class Game{
     private GameStatus status;
     private int gameSize;
     private int round;
-    private int numberOfBots;
-    private ClientHandler clientHandler;
+    private int hearts;
+
     private Player playerWhoPlayedLastTime;
 
-    public Game(MyPlayer host, int gameSize, ClientHandler clientHandler) {
-        this.clientHandler = clientHandler;
+    public Game(MyPlayer host, int gameSize) {
+
         this.host = host;
-//        host.setNumberOfHearts(numberOfBots);
-//        host.setNumberOfCards(round);
 
         this.players = new ArrayList<>();
         this.players.add(0 , host);
@@ -32,15 +29,18 @@ public class Game{
         this.status = GameStatus.WAITING;
     }
 
-    private void initialize(){
+    public void initialize(){
+        this.status = GameStatus.PAUSED;
         this.gameDeck = new GameDeck();
         this.round = 1;
+        this.hearts = gameSize;
+
         if (players.size() != gameSize){
             for (int i=0 ; i < gameSize-players.size();i++){
                 players.add(new Bot());
             }
         }
-        //gameDeck.dealHand(players , round);
+        gameDeck.dealHand(players , round , gameSize);
     }
 
 
@@ -54,43 +54,19 @@ public class Game{
         this.playerWhoPlayedLastTime = playerWhoPlayedLastTime;
     }
 
-    protected void runBots () {
-        for (int i=1 ; i<= numberOfBots ; i++){
-            //tODO : if different bots needed we will add it here.
-            Bot bot = new Bot();
-            new Thread(bot).start();
-            bot.setNumberOfHearts(numberOfBots);
-            bot.setNumberOfCards(round);
-            this.players.add(i , bot);
-        }
-    }
+
 
 
 
 
     public void play(String move){
-        this.status = GameStatus.RUNNING;
-        while (round < 13 && alivePlayerExists()){
-            makeMove(move);
-            nextRound();
-            /*if (playRound()){
-                nextRound();
-            }*/
-        }
-        status = GameStatus.FINISHED;
     }
 
-    private boolean alivePlayerExists() {
-        for (Player player : players){
-            if (player.isAlive()) return true;
-        }
-        return false;
-    }
+
 
     /*private boolean playRound(){
         gameDeck.getPlayersCards();
         gameDeck.dealCard(round , players);
-
     }*/
 
     private void nextRound(){
@@ -103,18 +79,14 @@ public class Game{
         if (canGoToNextRound) {
             round++;
             if (round == 3 || round == 6 || round == 9) {
-                giveHeartCardToPlayers();
+                hearts++;
             } else if (round == 2 || round == 5 || round == 8) {
                 giveStarCardToPlayers();
             }
         }
     }
 
-    public void giveHeartCardToPlayers () {
-        for (int i = 0; i < players.size(); i++) {
-            players.get(i).setNumberOfHearts(players.get(i).getNumberOfHearts() + 1);
-        }
-    }
+
 
     public void giveStarCardToPlayers () {
         gameDeck.setNumberOfStarCards(gameDeck.getNumberOfStarCards()+1);
@@ -122,15 +94,8 @@ public class Game{
 
     //game.playRound()
 
-   public State getState(){
-        gameState = new State();
-        gameState.setRealPlayerHand(host.getHand());
-        gameState.setDownCards(gameDeck.getDownCards());
-        gameState.getNumberOfHearts().put(host, host.getNumberOfHearts());
-        for (int i = 1; i < players.size(); i++) {
-           gameState.getNumberOfCards().put(players.get(i),players.get(i).getNumberOfCards());
-           gameState.getNumberOfHearts().put(players.get(i),players.get(i).getNumberOfHearts());
-        }
+   public State getState(MyPlayer player){
+        gameState = new State(this , player);
         return gameState;
    }
 
@@ -141,7 +106,7 @@ public class Game{
 
     public void makeMove (String move) { // put a card on downCards
         for (int i = 0; i < playerWhoPlayedLastTime.getHand().size(); i++) {
-            if (playerWhoPlayedLastTime.getHand().get(i).getId() == Integer.parseInt(move)) {
+            if (playerWhoPlayedLastTime.getHand().get(i).getNumber() == Integer.parseInt(move)) {
                 gameDeck.getDownCards().push(playerWhoPlayedLastTime.getHand().get(i));
                 playerWhoPlayedLastTime.getHand().remove(i);
                 playerWhoPlayedLastTime.setNumberOfCards(playerWhoPlayedLastTime.getNumberOfCards()-1);
@@ -157,7 +122,7 @@ public class Game{
         mainFor :
         for (int i = 0; i < players.size(); i++) {
             for (int j = 0; j < players.get(i).getHand().size(); j++) {
-                if (players.get(i).getHand().get(j).getId() < lastCard.getId()) {
+                if (players.get(i).getHand().get(j).getNumber() < lastCard.getNumber()) {
                     resultOfMove = false;
                     players.get(i).getHand().remove(j);
                     players.get(i).setNumberOfCards(players.get(i).getNumberOfCards()-1);
@@ -166,14 +131,37 @@ public class Game{
             }
         }
         if (!resultOfMove) {
-            playerWhoPlayedLastTime.setNumberOfHearts(playerWhoPlayedLastTime.getNumberOfHearts()-1);
-            deadPlayer(playerWhoPlayedLastTime);
+            hearts--;
         }
     }
 
-    public void deadPlayer (Player playerWhoPlayedLastTime) {
-        if (playerWhoPlayedLastTime.getNumberOfHearts() == 0) {
-            players.remove(playerWhoPlayedLastTime);
-        }
+
+
+    public MyPlayer getHost() {
+        return host;
     }
+
+    public GameDeck getGameDeck() {
+        return gameDeck;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public State getGameState() {
+        return gameState;
+    }
+
+    public int getGameSize() {
+        return gameSize;
+    }
+
+    public int getRound() {
+        return round;
+    }
+
+    public int getHearts() {return hearts;}
+
+    public void setHearts(int hearts) {this.hearts = hearts;}
 }

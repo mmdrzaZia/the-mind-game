@@ -11,7 +11,8 @@ import java.util.*;
 import com.google.gson.Gson;
 public class ClientHandler implements Runnable{
     private static List<ClientHandler> clientHandlers = new ArrayList<>();
-    private static HashMap<Game , Integer> games = new HashMap<>();
+    //the games hashmap contains number of players in game and the game itself.
+    private static LinkedHashMap<Game , Integer> games = new LinkedHashMap<>();
     private Socket socket;
     private static int idCounter = 0;
     private int id;
@@ -41,13 +42,14 @@ public class ClientHandler implements Runnable{
         try {
             while (socket.isConnected()){
                 String command = bufferedReader.readLine();
-                if (command !=null)
-                System.out.println("client["+id+"]: "+command);
-                readData(command);
-
+                if (command !=null) {
+                    System.out.println("client[" + id + "]: " + command);
+                    readData(command);
+                }
                 if (game!=null && game.getStatus() == GameStatus.RUNNING){
                     sendState();
                 }
+
             }
         }catch (IOException e){
             e.printStackTrace();
@@ -56,18 +58,24 @@ public class ClientHandler implements Runnable{
 
     public void sendState(){
         Gson gson = new Gson();
-        String message = gson.toJson(game.getState());
+        String message = gson.toJson(game.getState(player));
         sendMessage("state :" + message);
     }
 
 
     public void createNewGame(){
         //todo
-        Game game = new Game(player , gameSize, this);
-        games.put(game , id);
+        game = new Game(player , gameSize);
+        games.put(game , 1);
+        System.out.println("game is not null now!");
+        System.out.println(game);
     }
-    public void joinGame(int hostId){
 
+    public void joinGame(int hostId){
+        Game game = getGameByHostId(hostId);
+        game.getPlayers().add(player);
+        games.replace(game , games.get(game)+1);
+        sendMessage("JOINED_GAME-"+games.get(game)+"-"+game.getGameSize());
     }
 
 
@@ -78,7 +86,7 @@ public class ClientHandler implements Runnable{
     }
 
     private static void addToClientHandlers(ClientHandler handler){
-        clientHandlers.add(handler);
+        clientHandlers.add(handler.getId() ,handler);
         idCounter++;
     }
 
@@ -91,7 +99,7 @@ public class ClientHandler implements Runnable{
                 System.out.println("sent waiting games to client["+id+"]");
                 break;
             case "SET_NAME":
-                player = new MyPlayer(data[1]);
+                player = new MyPlayer(data[1] , this);
                 System.out.println("client["+id+"] : name set to " + data[1]);
                 break;
             case "CREATE_GAME":
@@ -99,10 +107,26 @@ public class ClientHandler implements Runnable{
                 createNewGame();
                 System.out.println("size of client["+id+"]'s game set to "+ gameSize);
                 break;
+            case "JOIN_GAME":
+                joinGame(Integer.parseInt(data[1]));
+                System.out.println("client["+id+"] joined client["+data[1]+"]'s game." );
+                break;
+            case "START_GAME":
+                startGame();
+                System.out.println("client["+id+"]s game initialized");
+                break;
+//            case "SEND_WAITING_STAT":
+//                sendMessage("JOINED_GAME-"+games.get(game)+"-"+game.getGameSize());
+//                System.out.println("client["+id+"] wants waiting stats on game.");
+//                break;
         }
     }
 
-
+    private void startGame() {
+        game.initialize();
+        sendMessage("GAME_INITIALIZED-"+game.getGameSize());
+        sendMessage(game.getState(player).toString());
+    }
 
     public HashMap<Game,Integer> getWaitingGames(){
         HashMap<Game , Integer> waitings = new HashMap();
@@ -117,8 +141,10 @@ public class ClientHandler implements Runnable{
     public void sendWaitingGames(){
         String games = "";
         for (Map.Entry<Game,Integer> map : getWaitingGames().entrySet()){
-            games += map.getKey().toString() + map.getValue() + "-4-3";
+            games += "/"+map.getKey().getHost().getHandler().getId() + "-" + map.getKey().getGameSize()+ "-" + map.getValue();
         }
+        if (games.length() != 0)
+        games = games.substring(1);
         sendMessage(games);
     }
 
@@ -128,5 +154,18 @@ public class ClientHandler implements Runnable{
         }catch (Exception e){
             System.out.println("Error in messageToAnotherClient/ClientHandler.Java");
         }
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    private Game getGameByHostId(int hostId){
+        for (Game game : games.keySet()){
+            if (game.getHost().getHandler().getId() == hostId){
+                return game;
+            }
+        }
+        return null;
     }
 }

@@ -1,20 +1,12 @@
 package logic.game;
 
 public class Card {
-    private CardType type;
-    private int id;
+    private int number;
 
-
-    public Card(CardType type,int id){
-        this.id = id;
-        this.type = type;
+    public Card(int number){
+        this.number = number;
     }
-
-    public CardType getType() {
-        return type;
-    }
-
-    public int getId() {
-        return id;
+    public int getNumber() {
+        return number;
     }
 }

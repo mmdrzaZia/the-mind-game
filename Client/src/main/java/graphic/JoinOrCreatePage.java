@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class JoinOrCreatePage extends JFrame implements ActionListener {
     private final Dimension size = new Dimension(1280 , 800);
@@ -41,7 +42,8 @@ public class JoinOrCreatePage extends JFrame implements ActionListener {
         for (String game : controller.getCurrentGames()){
             String[] gameDetails = game.split("-");
             mainPanel.add(Box.createRigidArea(new Dimension(10 , 5)));
-            mainPanel.add(new GamePanel(gameDetails[0] , gameDetails[1] , gameDetails[2]));
+            if (!Objects.equals(gameDetails[0], ""))
+            mainPanel.add(new JoinGamePanel(gameDetails[0] , gameDetails[1] , gameDetails[2] , controller));
         }
     }
 

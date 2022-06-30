@@ -1,11 +1,13 @@
 package graphic;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Theme {
     public static List<Theme> themes = new ArrayList<>();
+    private static final String PATH_TO_LOADING_ANIMATION = "src/resources/animations/loading.gif";
     private Color mainColor;
     private Color secondaryColor;
     private Color fontColor;
@@ -43,6 +45,10 @@ public class Theme {
 
     public Color getMainColor() {
         return mainColor;
+    }
+
+    public static ImageIcon getLoadingAnimation(){
+        return new ImageIcon(PATH_TO_LOADING_ANIMATION);
     }
 
 }
