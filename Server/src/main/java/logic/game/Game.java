@@ -16,8 +16,8 @@ public class Game{
     private int gameSize;
     private int round;
     private int hearts;
-
-    private Player playerWhoPlayedLastTime;
+    private List<Thread> botThreads;
+    //private Player playerWhoPlayedLastTime;
 
     public Game(MyPlayer host, int gameSize) {
 
@@ -37,22 +37,22 @@ public class Game{
 
         if (players.size() != gameSize){
             for (int i=0 ; i < gameSize-players.size();i++){
-                players.add(new Bot());
+                players.add(new Bot(this));
             }
         }
-        gameDeck.dealHand(players , round , gameSize);
+        playRound(true);
     }
 
 
 
 
-    public Player getPlayerWhoPlayedLastTime() {
+    /*public Player getPlayerWhoPlayedLastTime() {
         return playerWhoPlayedLastTime;
     }
 
     public void setPlayerWhoPlayedLastTime(Player playerWhoPlayedLastTime) {
         this.playerWhoPlayedLastTime = playerWhoPlayedLastTime;
-    }
+    }*/
 
 
 
@@ -69,7 +69,7 @@ public class Game{
         gameDeck.dealCard(round , players);
     }*/
 
-    private void nextRound(){
+    public void nextRound(){
         boolean canGoToNextRound = true;
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).getHand().size() != 0) {
@@ -82,17 +82,34 @@ public class Game{
                 hearts++;
             } else if (round == 2 || round == 5 || round == 8) {
                 giveStarCardToPlayers();
+            } else if (round == 13) {
+                status = GameStatus.WIN;
+                // send message to client
             }
+            playRound(true);
+        } else {
+            playRound(false);
         }
     }
-
-
 
     public void giveStarCardToPlayers () {
         gameDeck.setNumberOfStarCards(gameDeck.getNumberOfStarCards()+1);
     }
 
-    //game.playRound()
+    private void playRound(boolean isNewRound) {
+        for (int i = 0; i < players.size(); i++) {
+            if (isNewRound) {
+                players.get(i).setNumberOfCards(round);
+                gameDeck.dealHand(players, round, gameSize);
+            }
+            // give hand to players
+            if (players.get(i) instanceof Bot) {
+                Thread thread = new Thread((Runnable) players.get(i));
+                thread.run();
+                botThreads.add(thread);
+            }
+        }
+    }
 
    public State getState(MyPlayer player){
         gameState = new State(this , player);
@@ -104,9 +121,9 @@ public class Game{
         return status;
     }
 
-    public void makeMove (String move) { // put a card on downCards
+    public void makeMove (long cardNumber,Player playerWhoPlayedLastTime) { // put a card on downCards
         for (int i = 0; i < playerWhoPlayedLastTime.getHand().size(); i++) {
-            if (playerWhoPlayedLastTime.getHand().get(i).getNumber() == Integer.parseInt(move)) {
+            if (playerWhoPlayedLastTime.getHand().get(i).getNumber() == cardNumber) {
                 gameDeck.getDownCards().push(playerWhoPlayedLastTime.getHand().get(i));
                 playerWhoPlayedLastTime.getHand().remove(i);
                 playerWhoPlayedLastTime.setNumberOfCards(playerWhoPlayedLastTime.getNumberOfCards()-1);
@@ -116,7 +133,7 @@ public class Game{
         checkResultOfMove();
     }
 
-    public void checkResultOfMove () { // check that the move is correct or not
+    private void checkResultOfMove () { // check that the move is correct or not
         boolean resultOfMove = true;
         Card lastCard = gameDeck.getDownCards().peek();
         mainFor :
@@ -132,7 +149,17 @@ public class Game{
         }
         if (!resultOfMove) {
             hearts--;
+            if (hearts == 0) {
+                status = GameStatus.LOSE;
+                // send finish message to client
+            }
         }
+        for (int i = 0; i < botThreads.size(); i++) {
+            if (!botThreads.get(i).isInterrupted()) {
+                botThreads.get(i).interrupt();
+            }
+        }
+        nextRound();
     }
 
 

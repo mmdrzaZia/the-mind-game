@@ -3,7 +3,7 @@ package logic.player;
 import logic.game.State;
 import server.ClientHandler;
 
-public class MyPlayer extends Player implements Runnable{
+public class MyPlayer extends Player{
 
     private final ClientHandler handler;
     private boolean hasStarCard;
@@ -24,10 +24,5 @@ public class MyPlayer extends Player implements Runnable{
 
     public boolean isHasStarCard() {
         return hasStarCard;
-    }
-
-    @Override
-    public void run() {
-
     }
 }
