@@ -1,5 +1,5 @@
 package logic.game;
 
 public enum GameStatus {
-    RUNNING , PAUSED, FINISHED,  WAITING
+    RUNNING , PAUSED, LOSE,  WAITING, WIN
 }

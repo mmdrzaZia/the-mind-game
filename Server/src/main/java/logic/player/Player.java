@@ -8,7 +8,6 @@ import java.util.List;
 public abstract class Player {
     protected ArrayList<Card> hand;
     protected int numberOfCards;
-    protected boolean isAlive;
     protected String name;
 
     public Player(){
@@ -28,8 +27,4 @@ public abstract class Player {
         return hand;
     }
 
-
-    //playStrategy?????
-
-    //checkIfAlive()
 }
