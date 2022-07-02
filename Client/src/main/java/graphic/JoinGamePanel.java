@@ -4,13 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class JoinGamePanel extends JPanel implements ActionListener {
     private String hostId;
     private String gameSize;
     private String playersIn;
     private final JButton joinButton = new JButton("Join");
-    private final JoinOrCreatePageController controller;
+    private JoinOrCreatePageController controller;
+    private SwingWorker<Void , String> joinGameTask;
 
     public JoinGamePanel(String hostName, String gameSize, String playersIn , JoinOrCreatePageController controller) {
         this.controller = controller;
@@ -29,6 +31,7 @@ public class JoinGamePanel extends JPanel implements ActionListener {
         joinButton.setFocusable(false);
         this.setBorder(BorderFactory.createLineBorder(Theme.getMainTheme().getMainColor() , 2));
 
+
     }
 
     @Override
@@ -37,4 +40,5 @@ public class JoinGamePanel extends JPanel implements ActionListener {
             controller.joinGame(Integer.parseInt(hostId));
         }
     }
+
 }

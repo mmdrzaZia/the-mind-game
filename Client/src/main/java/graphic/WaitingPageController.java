@@ -1,26 +1,21 @@
 package graphic;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.util.List;
 
 public class WaitingPageController extends Controller{
     private boolean startPressed = false;
     private int gameSize;
+    private JFrame frame;
 
     public WaitingPageController(PrintWriter printWriter, BufferedReader bufferedReader) {
         super(printWriter, bufferedReader);
+
     }
     public void startGame(){
         sendMessageToServer("START_GAME");
-        while (true){
-            try {
-                command = bufferedReader.readLine();
-                readData(command);
-                break;
-            }catch (Exception e){
-
-            }
-        }
     }
 
     @Override
@@ -31,6 +26,19 @@ public class WaitingPageController extends Controller{
                 gameSize = Integer.parseInt(data[1]);
                 break;
         }
+    }
+
+    @Override
+    protected Object doInBackground() throws Exception {
+        while (true){
+            command = bufferedReader.readLine();
+            publish(command);
+        }
+    }
+
+    @Override
+    protected void process(List chunks) {
+        readData(command);
     }
 
     public void setStartPressed(boolean startPressed) {

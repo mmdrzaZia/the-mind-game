@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Objects;
 
 public class WaitingPage extends JFrame implements ActionListener {
@@ -12,6 +13,9 @@ public class WaitingPage extends JFrame implements ActionListener {
     private final JButton startButton = new JButton("Play");
     private final JPanel mainPanel = new JPanel();
     private final JPanel animationPanel = new JPanel();
+    private final JLabel playersJoinedLabel = new JLabel();
+    private SwingWorker<Void, Integer> playersJoinedTask;
+
 
     public WaitingPage(WaitingPageController controller) {
         this.controller = controller;
@@ -36,6 +40,31 @@ public class WaitingPage extends JFrame implements ActionListener {
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.setHorizontalAlignment(SwingConstants.CENTER);
         startButton.setPreferredSize(new Dimension(150 , 25));
+        playersJoinedLabel.setText("0 players joined");
+        mainPanel.add(playersJoinedLabel);
+
+        playersJoinedTask = new SwingWorker<Void, Integer>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                while (true){
+                    try {
+                        controller.command = controller.getBufferedReader().readLine();
+                        System.out.println(controller.command);
+                        if (controller.getCommand().split("-")[0].equals("JOINED"))
+                            publish(Integer.parseInt(controller.command.split("-")[1]));
+                    }catch (Exception e){
+
+                    }
+                }
+            }
+
+            @Override
+            protected void process(List<Integer> chunks) {
+                playersJoinedLabel.setText(chunks.get(chunks.size()-1)+" players joined!");
+            }
+        };
+        playersJoinedTask.execute();
+
         mainPanel.add(startButton);
         startButton.addActionListener(this);
         this.setLocationRelativeTo(null);
@@ -47,8 +76,12 @@ public class WaitingPage extends JFrame implements ActionListener {
         if (actionEvent.getSource() == startButton){
             controller.startGame();
             this.dispose();
-            GameController gameController = new GameController(controller.getPrintWriter(), controller.getBufferedReader());
-            GameFrame gameFrame = new GameFrame(controller.getGameSize(),gameController);
+            SwingUtilities.invokeLater(()->{
+                playersJoinedTask.cancel(true);
+                GameController gameController = new GameController(controller.getPrintWriter(), controller.getBufferedReader());
+                GameFrame gameFrame = new GameFrame(controller.getGameSize(),gameController);
+            });
+
         }
     }
 

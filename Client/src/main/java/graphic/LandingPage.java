@@ -16,6 +16,7 @@ public class LandingPage extends JFrame implements ActionListener {
 
     public LandingPage(LandingPageController controller){
         this.controller = controller;
+        controller.setPage(this);
         this.setSize(size);
         this.setLayout(new BorderLayout());
         this.setResizable(false);
@@ -44,8 +45,10 @@ public class LandingPage extends JFrame implements ActionListener {
             if (textField.getText() != null && !textField.getText().equals("")){
                 controller.setName(textField.getText());
                 this.dispose();
-                JoinOrCreatePageController joinOrCreatePageController = new JoinOrCreatePageController(controller.getPrintWriter() , controller.getBufferedReader());
-                JoinOrCreatePage joinOrCreatePage = new JoinOrCreatePage(joinOrCreatePageController);
+                SwingUtilities.invokeLater(()-> {
+                    JoinOrCreatePageController joinOrCreatePageController = new JoinOrCreatePageController(controller.getPrintWriter(), controller.getBufferedReader());
+                    JoinOrCreatePage joinOrCreatePage = new JoinOrCreatePage(joinOrCreatePageController);
+                });
             }
         }
     }

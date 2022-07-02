@@ -1,9 +1,10 @@
 package graphic;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
-public class Controller {
+public class Controller extends SwingWorker{
     protected String command;
     protected PrintWriter printWriter;
     protected BufferedReader bufferedReader;
@@ -28,4 +29,10 @@ public class Controller {
     }
 
     public void readData(String command){}
+
+
+    @Override
+    protected Object doInBackground() throws Exception {
+        return null;
+    }
 }
