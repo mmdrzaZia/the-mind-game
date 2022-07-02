@@ -3,44 +3,47 @@ package logic.game;
 import logic.player.MyPlayer;
 import logic.player.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Stack;
+import java.util.*;
 
 public class State {
+    private Game game;
     private ArrayList<Card> hand;
     private Stack<Card> downCards;
-    private HashMap<Player,Integer> numberOfCards;
+    private LinkedHashMap<Player,Integer> numberOfCards;
+    private int gameSize;
 
 
     public State(Game game, MyPlayer player) {
+        this.game = game;
+        gameSize = game.getGameSize();
         hand = player.getHand();
         downCards = game.getGameDeck().getDownCards();
-        numberOfCards = new HashMap<>();
+        numberOfCards = new LinkedHashMap<>();
         for (Player p : game.getPlayers()){
-            numberOfCards.put(p,p.getNumberOfCards());
+            numberOfCards.put(p,p.getHand().size());
         }
     }
     //todo
     @Override
     public String toString() {
-        return "STATE-["+downCards+"]-["+hand+"]-["+numberOfCards.get(1)+"]-["+numberOfCards.get(2)+"]-["+numberOfCards.get(3)+"]";
-    }
+        Set<Player> keySet = numberOfCards.keySet();
+        Player[] keyArray
+                = keySet.toArray(new Player[keySet.size()-1]);
 
-    private String handString(){
-        StringBuilder hand = new StringBuilder();
-        for (Card card : this.hand){
-            hand.append(card.toString()).append("c");
+        String down = downCards.toString().substring(1,downCards.toString().length()-1);
+        String handString = hand.toString().substring(1,hand.toString().length()-1);
+
+        switch (gameSize){
+            case 2:
+                return "STATE-"+down+"-"+handString+"-"+game.getHearts()+"-"+numberOfCards.get(keyArray[0]);
+            case 3:
+                return "STATE-"+down+"-"+handString+"-"+game.getHearts()+"-"+numberOfCards.get(keyArray[0])+"-"+numberOfCards.get(keyArray[1]);
+            case 4:
+                return "STATE-"+down+"-"+handString+"-"+game.getHearts()+"-"+numberOfCards.get(keyArray[0])+"-"+numberOfCards.get(keyArray[1])+"-"+numberOfCards.get(keyArray[2]);
+            default:
+                System.out.println("GAME SIZE IS NOT RIGHT!!!!!");
+                return null;
         }
-        hand.deleteCharAt(hand.length());
-        return hand.toString();
-    }
-    private String downCardsString(){
-        StringBuilder down = new StringBuilder();
-        for (Card card : downCards){
-            down.append(card.toString()).append('c');
-        }
-        return down.toString();
     }
 
 
