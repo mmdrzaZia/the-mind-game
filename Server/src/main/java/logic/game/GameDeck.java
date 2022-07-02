@@ -69,10 +69,8 @@ public class GameDeck {
             for (int i=0 ; i<round ; i++) {
                 player.getHand().add(dealCardFromTop());
             }
-
             if (player instanceof MyPlayer) ((MyPlayer) player).setHasStarCard(true);
         }
-
     }
 
     public void getCardsFromPlayers(List<Player> players){

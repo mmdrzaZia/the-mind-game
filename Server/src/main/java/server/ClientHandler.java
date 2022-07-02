@@ -51,6 +51,7 @@ public class ClientHandler implements Runnable{
                 }
 
             }
+            games.remove(game);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -67,15 +68,14 @@ public class ClientHandler implements Runnable{
         //todo
         game = new Game(player , gameSize);
         games.put(game , 1);
-        System.out.println("game is not null now!");
-        System.out.println(game);
     }
 
     public void joinGame(int hostId){
         Game game = getGameByHostId(hostId);
         game.getPlayers().add(player);
         games.replace(game , games.get(game)+1);
-        sendMessage("JOINED_GAME-"+games.get(game)+"-"+game.getGameSize());
+        clientHandlers.get(hostId).sendMessage("JOINED-"+games.get(game));
+        sendMessage("JOINED-"+game.getGameSize()+"-"+games.get(game));
     }
 
 
@@ -115,17 +115,23 @@ public class ClientHandler implements Runnable{
                 startGame();
                 System.out.println("client["+id+"]s game initialized");
                 break;
-//            case "SEND_WAITING_STAT":
-//                sendMessage("JOINED_GAME-"+games.get(game)+"-"+game.getGameSize());
-//                System.out.println("client["+id+"] wants waiting stats on game.");
-//                break;
+            case "STATE":
+                sendMessage(game.getState(player).toString());
+                break;
         }
     }
 
     private void startGame() {
         game.initialize();
         sendMessage("GAME_INITIALIZED-"+game.getGameSize());
-        sendMessage(game.getState(player).toString());
+        while (true){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            sendMessage(game.getState(player).toString());
+        }
     }
 
     public HashMap<Game,Integer> getWaitingGames(){
