@@ -128,7 +128,18 @@ public class ClientHandler implements Runnable{
             case "PLAY_ROUND":
                 game.playRound();
                 break;
-
+            case "MOVE":
+                switch (data[1]){
+                    case "STAR":
+                        game.playStar();
+                        break;
+                    case "NUMBER":
+                        if (data[3].charAt(0) == ' ')
+                            data[3] = data[3].substring(1);
+                        game.makeMove(Long.parseLong(data[3]) , player);
+                        break;
+                }
+                break;
         }
     }
 
