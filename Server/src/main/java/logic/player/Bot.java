@@ -15,6 +15,7 @@ public class Bot extends Player implements Runnable{
 
     @Override
     public void run() {
+        System.out.println("BOT THREAD IS RUNNING");
         leastCardNumber = getLeastNumber().getNumber();
         try {
             Thread.sleep(leastCardNumber*3000);

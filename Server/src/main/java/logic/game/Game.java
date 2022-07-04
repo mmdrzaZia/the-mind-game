@@ -97,8 +97,8 @@ public class Game{
             // give hand to players
             if (players.get(i) instanceof Bot) {
                 Thread thread = new Thread((Runnable) players.get(i));
-                thread.run();
                 botThreads.add(thread);
+                thread.start();
             }
         }
         status = GameStatus.RUNNING;

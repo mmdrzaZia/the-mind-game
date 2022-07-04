@@ -6,6 +6,7 @@ import logic.player.MyPlayer;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.*;
 
 import com.google.gson.Gson;
@@ -123,6 +124,10 @@ public class ClientHandler implements Runnable{
                 String state = game.getState(player).toString();
                 sendMessage(state);
                 System.out.println("client["+id+"]s game round "+game.getRound() +" started");
+                break;
+            case "PLAY_ROUND":
+                game.playRound();
+                break;
 
         }
     }
