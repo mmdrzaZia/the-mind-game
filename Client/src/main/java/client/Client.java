@@ -2,7 +2,9 @@ package client;
 
 import graphic.LandingPage;
 import graphic.LandingPageController;
+import graphic.Theme;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -22,6 +24,7 @@ public class Client implements Runnable{
             LandingPage landingPage = new LandingPage(landingPageController);
         }catch (IOException e){
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null , "Server is Down, try later..." , "Connection Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

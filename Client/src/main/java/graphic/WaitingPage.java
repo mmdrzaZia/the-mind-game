@@ -1,11 +1,12 @@
 package graphic;
 
+import graphic.game.GameController;
+import graphic.game.GameFrame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
-import java.util.Objects;
 
 public class WaitingPage extends JFrame implements ActionListener {
     private final WaitingPageController controller;
@@ -15,10 +16,15 @@ public class WaitingPage extends JFrame implements ActionListener {
     private final JPanel animationPanel = new JPanel();
     private final JLabel playersJoinedLabel = new JLabel();
     private SwingWorker<Void, Integer> playersJoinedTask;
+    private final int gameSize;
+    private final boolean isHost;
 
 
-    public WaitingPage(WaitingPageController controller) {
+    public WaitingPage(WaitingPageController controller , int gameSize , boolean isHost) {
+        this.isHost = isHost;
+        this.gameSize = gameSize;
         this.controller = controller;
+        controller.setFrame(this);
         this.setSize(size);
         this.setLayout(new BorderLayout());
         mainPanel.setBackground(Theme.getMainTheme().getMainColor());
@@ -40,32 +46,15 @@ public class WaitingPage extends JFrame implements ActionListener {
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.setHorizontalAlignment(SwingConstants.CENTER);
         startButton.setPreferredSize(new Dimension(150 , 25));
-        playersJoinedLabel.setText("0 players joined");
+
         mainPanel.add(playersJoinedLabel);
+        controller.execute();
 
-        playersJoinedTask = new SwingWorker<Void, Integer>() {
-            @Override
-            protected Void doInBackground() throws Exception {
-                while (true){
-                    try {
-                        controller.command = controller.getBufferedReader().readLine();
-                        System.out.println(controller.command);
-                        if (controller.getCommand().split("-")[0].equals("JOINED"))
-                            publish(Integer.parseInt(controller.command.split("-")[1]));
-                    }catch (Exception e){
+        if (isHost){
+            mainPanel.add(startButton);
+            playersJoinedLabel.setText("0 players joined");
+        }
 
-                    }
-                }
-            }
-
-            @Override
-            protected void process(List<Integer> chunks) {
-                playersJoinedLabel.setText(chunks.get(chunks.size()-1)+" players joined!");
-            }
-        };
-        playersJoinedTask.execute();
-
-        mainPanel.add(startButton);
         startButton.addActionListener(this);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -75,14 +64,14 @@ public class WaitingPage extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == startButton){
             controller.startGame();
-            this.dispose();
-            SwingUtilities.invokeLater(()->{
-                playersJoinedTask.cancel(true);
-                GameController gameController = new GameController(controller.getPrintWriter(), controller.getBufferedReader());
-                GameFrame gameFrame = new GameFrame(controller.getGameSize(),gameController);
-            });
-
         }
     }
 
+    public JLabel getPlayersJoinedLabel() {
+        return playersJoinedLabel;
+    }
+
+    public int getGameSize() {
+        return gameSize;
+    }
 }

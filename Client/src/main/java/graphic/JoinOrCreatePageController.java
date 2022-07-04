@@ -3,6 +3,7 @@ package graphic;
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Objects;
 
 public class JoinOrCreatePageController extends Controller{
     private JoinOrCreatePage frame;
+    private int gameSize;
 
     public JoinOrCreatePageController(PrintWriter printWriter, BufferedReader bufferedReader) {
         super(printWriter, bufferedReader);
@@ -38,14 +40,25 @@ public class JoinOrCreatePageController extends Controller{
     }
 
     public void joinGame(int hostId){
+        //this.done();
+        frame.dispose();
         sendMessageToServer("JOIN_GAME-"+hostId);
+        try {
+            command = bufferedReader.readLine();
+            String[] data = command.split("-");
+            if (data[0].equals("JOINED")){
+                gameSize = Integer.parseInt(data[1]);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected Void doInBackground() throws Exception {
         while (frame.isShowing()){
             process(getCurrentGames());
-            Thread.sleep(1000);
+            Thread.sleep(5000);
         }
         return null;
     }
@@ -67,5 +80,9 @@ public class JoinOrCreatePageController extends Controller{
 
     public void setFrame(JoinOrCreatePage frame) {
         this.frame = frame;
+    }
+
+    public int getGameSize() {
+        return gameSize;
     }
 }

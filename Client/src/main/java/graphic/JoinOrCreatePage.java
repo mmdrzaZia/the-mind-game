@@ -26,7 +26,7 @@ public class JoinOrCreatePage extends JFrame implements ActionListener {
         backPanel.add(scrollPane , BorderLayout.CENTER);
         backPanel.add(rightPanel , BorderLayout.EAST);
 
-        rightPanel.setBackground(Theme.getMainTheme().getSecondaryColor());
+        rightPanel.setBackground(Theme.getMainTheme().getMainColor());
         rightPanel.setPreferredSize(new Dimension(320 , 800));
 
         this.setLocationRelativeTo(null);

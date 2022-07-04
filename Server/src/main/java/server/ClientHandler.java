@@ -9,12 +9,14 @@ import java.net.Socket;
 import java.util.*;
 
 import com.google.gson.Gson;
+import logic.player.Player;
+
 public class ClientHandler implements Runnable{
     private static List<ClientHandler> clientHandlers = new ArrayList<>();
-    //the games hashmap contains number of players in game and the game itself.
     private static LinkedHashMap<Game , Integer> games = new LinkedHashMap<>();
-    private Socket socket;
     private static int idCounter = 0;
+    private Socket socket;
+
     private int id;
     private BufferedReader bufferedReader;
     private PrintWriter printWriter;
@@ -40,16 +42,17 @@ public class ClientHandler implements Runnable{
     @Override
     public void run() {
         try {
-            while (socket.isConnected()){
+            while (!socket.isClosed()){
                 String command = bufferedReader.readLine();
                 if (command !=null) {
                     System.out.println("client[" + id + "]: " + command);
                     readData(command);
+                } if (command == null){
+                    socket.close();
+                    clientHandlers.remove(this);
+                    idCounter--;
+                    System.out.println("Client disconnected");
                 }
-                if (game!=null && game.getStatus() == GameStatus.RUNNING){
-                    sendState();
-                }
-
             }
             games.remove(game);
         }catch (IOException e){
@@ -71,11 +74,11 @@ public class ClientHandler implements Runnable{
     }
 
     public void joinGame(int hostId){
-        Game game = getGameByHostId(hostId);
+        game = getGameByHostId(hostId);
         game.getPlayers().add(player);
         games.replace(game , games.get(game)+1);
-        clientHandlers.get(hostId).sendMessage("JOINED-"+games.get(game));
-        sendMessage("JOINED-"+game.getGameSize()+"-"+games.get(game));
+
+        sendMessageToAllGamePlayers("JOINED-"+games.get(game));
     }
 
 
@@ -86,7 +89,7 @@ public class ClientHandler implements Runnable{
     }
 
     private static void addToClientHandlers(ClientHandler handler){
-        clientHandlers.add(handler.getId() ,handler);
+        clientHandlers.add(handler);
         idCounter++;
     }
 
@@ -111,27 +114,21 @@ public class ClientHandler implements Runnable{
                 joinGame(Integer.parseInt(data[1]));
                 System.out.println("client["+id+"] joined client["+data[1]+"]'s game." );
                 break;
-            case "START_GAME":
-                startGame();
+            case "INITIALIZE_GAME":
+                initializeGame();
                 System.out.println("client["+id+"]s game initialized");
+                sendMessageToAllGamePlayers("GAME_INITIALIZED");
                 break;
             case "STATE":
-                sendMessage(game.getState(player).toString());
-                break;
+                String state = game.getState(player).toString();
+                sendMessage(state);
+                System.out.println("client["+id+"]s game round "+game.getRound() +" started");
+
         }
     }
 
-    private void startGame() {
+    private void initializeGame() {
         game.initialize();
-        sendMessage("GAME_INITIALIZED-"+game.getGameSize());
-        while (true){
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            sendMessage(game.getState(player).toString());
-        }
     }
 
     public HashMap<Game,Integer> getWaitingGames(){
@@ -154,13 +151,6 @@ public class ClientHandler implements Runnable{
         sendMessage(games);
     }
 
-    private static void messageToAnotherClient(int id,String msg){
-        try {
-            clientHandlers.get(id).sendMessage(msg);
-        }catch (Exception e){
-            System.out.println("Error in messageToAnotherClient/ClientHandler.Java");
-        }
-    }
 
     public int getId() {
         return id;
@@ -173,5 +163,12 @@ public class ClientHandler implements Runnable{
             }
         }
         return null;
+    }
+    public void sendMessageToAllGamePlayers(String message){
+        for (Player player : game.getPlayers()){
+            if (player instanceof MyPlayer){
+               ((MyPlayer) player).getHandler().sendMessage(message);
+            }
+        }
     }
 }

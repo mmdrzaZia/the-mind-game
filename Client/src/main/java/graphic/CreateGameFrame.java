@@ -44,10 +44,11 @@ public class CreateGameFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == createButton){
-            controller.createGame(sizeOfGame.getSelectedIndex()+2);
+            int gameSize = sizeOfGame.getSelectedIndex()+2;
+            controller.createGame(gameSize);
             this.dispose();
             WaitingPageController waitingPageController = new WaitingPageController(controller.getPrintWriter(), controller.getBufferedReader());
-            WaitingPage waitingPage = new WaitingPage(waitingPageController);
+            WaitingPage waitingPage = new WaitingPage(waitingPageController , gameSize ,true);
         }
     }
 }

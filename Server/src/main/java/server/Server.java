@@ -17,12 +17,11 @@ public class Server {
         try{
             ServerSocket serverSocket = new ServerSocket(8080);
             System.out.println("Server is Running...");
+
             while (!serverSocket.isClosed()){
-                //Server socket will be closed in Client Handler.
                 Socket socket = serverSocket.accept();
                 ClientHandler clientHandler = new ClientHandler(socket);
                 Thread thread = new Thread(clientHandler);
-                // The start method begins the execution of a thread.
                 thread.start();
             }
         }catch (IOException e){

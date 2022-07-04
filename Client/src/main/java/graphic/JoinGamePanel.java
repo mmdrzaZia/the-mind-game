@@ -38,6 +38,8 @@ public class JoinGamePanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == joinButton){
             controller.joinGame(Integer.parseInt(hostId));
+            WaitingPageController waitingPageController = new WaitingPageController(controller.getPrintWriter() , controller.getBufferedReader());
+            WaitingPage waitingPage = new WaitingPage(waitingPageController , controller.getGameSize() , false);
         }
     }
 

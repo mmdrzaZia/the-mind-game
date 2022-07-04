@@ -16,8 +16,9 @@ public class Game{
     private int gameSize;
     private int round;
     private int hearts;
+    private int stars = 2;
+    private ArrayList<Integer> leastNumbers;
     private List<Thread> botThreads;
-    //private Player playerWhoPlayedLastTime;
 
     public Game(MyPlayer host, int gameSize) {
 
@@ -34,32 +35,24 @@ public class Game{
         this.gameDeck = new GameDeck();
         this.round = 1;
         this.hearts = gameSize;
+        botThreads = new ArrayList<>();
 
         if (players.size() != gameSize){
             for (int i=0 ; i < gameSize-players.size();i++){
                 players.add(new Bot(this));
             }
         }
-        playRound(true);
+        gameDeck.dealHand(players , round , gameSize);
+        //playRound(true);
     }
 
 
-
-
-    /*public Player getPlayerWhoPlayedLastTime() {
-        return playerWhoPlayedLastTime;
-    }
-
-    public void setPlayerWhoPlayedLastTime(Player playerWhoPlayedLastTime) {
-        this.playerWhoPlayedLastTime = playerWhoPlayedLastTime;
-    }*/
-
-
-
-
-
-
-    public void play(String move){
+    public void playStar (){
+        leastNumbers = new ArrayList<>();
+        for (int z = 0; z < players.size(); z++) {
+            players.get(z).getHand().remove(players.get(z).getLeastNumber());
+            leastNumbers.add(players.get(z).getLeastNumber().getNumber());
+        }
     }
 
 
@@ -86,22 +79,33 @@ public class Game{
                 status = GameStatus.WIN;
                 // send message to client
             }
-            playRound(true);
+            playRound();
         } else {
-            playRound(false);
+            continueRound();
         }
     }
 
     public void giveStarCardToPlayers () {
-        gameDeck.setNumberOfStarCards(gameDeck.getNumberOfStarCards()+1);
+        stars++;
     }
 
-    private void playRound(boolean isNewRound) {
+    public void playRound() {
+
         for (int i = 0; i < players.size(); i++) {
-            if (isNewRound) {
-                players.get(i).setNumberOfCards(round);
-                gameDeck.dealHand(players, round, gameSize);
+            players.get(i).setNumberOfCards(round);
+            gameDeck.dealHand(players, round, gameSize);
+            // give hand to players
+            if (players.get(i) instanceof Bot) {
+                Thread thread = new Thread((Runnable) players.get(i));
+                thread.run();
+                botThreads.add(thread);
             }
+        }
+        status = GameStatus.RUNNING;
+    }
+
+    public void continueRound(){
+        for (int i = 0; i < players.size(); i++) {
             // give hand to players
             if (players.get(i) instanceof Bot) {
                 Thread thread = new Thread((Runnable) players.get(i));
@@ -121,12 +125,12 @@ public class Game{
         return status;
     }
 
-    public void makeMove (long cardNumber,Player playerWhoPlayedLastTime) { // put a card on downCards
-        for (int i = 0; i < playerWhoPlayedLastTime.getHand().size(); i++) {
-            if (playerWhoPlayedLastTime.getHand().get(i).getNumber() == cardNumber) {
-                gameDeck.getDownCards().push(playerWhoPlayedLastTime.getHand().get(i));
-                playerWhoPlayedLastTime.getHand().remove(i);
-                playerWhoPlayedLastTime.setNumberOfCards(playerWhoPlayedLastTime.getNumberOfCards()-1);
+    public void makeMove (long cardNumber,Player lastPlayedPlayer) { // put a card on downCards
+        for (int i = 0; i < lastPlayedPlayer.getHand().size(); i++) {
+            if (lastPlayedPlayer.getHand().get(i).getNumber() == cardNumber) {
+                gameDeck.getDownCards().push(lastPlayedPlayer.getHand().get(i));
+                lastPlayedPlayer.getHand().remove(i);
+                lastPlayedPlayer.setNumberOfCards(lastPlayedPlayer.getNumberOfCards()-1);
                 break;
             }
         }
@@ -152,6 +156,7 @@ public class Game{
             if (hearts == 0) {
                 status = GameStatus.LOSE;
                 // send finish message to client
+
             }
         }
         for (int i = 0; i < botThreads.size(); i++) {
@@ -191,4 +196,8 @@ public class Game{
     public int getHearts() {return hearts;}
 
     public void setHearts(int hearts) {this.hearts = hearts;}
+
+    public int getStars() {
+        return stars;
+    }
 }

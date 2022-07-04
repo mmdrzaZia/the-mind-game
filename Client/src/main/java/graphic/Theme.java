@@ -8,6 +8,7 @@ import java.util.List;
 public class Theme {
     public static List<Theme> themes = new ArrayList<>();
     private static final String PATH_TO_LOADING_ANIMATION = "src/resources/animations/loading.gif";
+    private static final String PATH_TO_IMAGES = "src/resources/images/";
     private Color mainColor;
     private Color secondaryColor;
     private Color fontColor;
@@ -50,5 +51,20 @@ public class Theme {
     public static ImageIcon getLoadingAnimation(){
         return new ImageIcon(PATH_TO_LOADING_ANIMATION);
     }
-
+    public static ImageIcon getHeartImage(){
+        return new ImageIcon(PATH_TO_IMAGES + "heart.png");
+    }
+    public static ImageIcon getStarImage(){
+        return new ImageIcon(PATH_TO_IMAGES + "favourite.png");
+    }
+    public static ImageIcon getTheMindImage(){
+        return new ImageIcon(PATH_TO_IMAGES+"theMind.png");
+    }
+    public static ImageIcon getStartImage(){
+        return new ImageIcon(PATH_TO_IMAGES + "start.png");
+    }
+    public static ImageIcon getStart2Image(){
+        return new ImageIcon(PATH_TO_IMAGES + "start2.png");
+    }
+    public static ImageIcon getBackgroundImage(){return new ImageIcon(PATH_TO_IMAGES + "backGround.png");}
 }

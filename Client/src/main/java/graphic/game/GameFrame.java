@@ -1,35 +1,40 @@
-package graphic;
+package graphic.game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class GameFrame extends JFrame {
+public class GameFrame extends JFrame{
     private final Dimension size = new Dimension(1280,800);
     private GameController controller;
+
+    private final boolean isHost;
     private final JPanel mainPanel = new JPanel();
     private GameDeckPanel deckPanel;
     private PlayerHandPanel[] handsPanels;
     private int hearts;
     private int gameSize;
 
-    public GameFrame(int gameSize , GameController controller){
+    public GameFrame(int gameSize , GameController controller , boolean isHost){
+        this.isHost = isHost;
         this.controller = controller;
+        controller.setHost(isHost);
         controller.setGameFrame(this);
         controller.execute();
         mainPanel.setLayout(new BorderLayout());
-//        deckPanel = new GameDeckPanel(controller);
-//        handsPanels = new PlayerHandPanel[gameSize];
+        this.add(mainPanel);
         this.gameSize= gameSize;
         this.setSize(size);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
-//
     }
 
     private void setupFourPlayerGame() {
-        System.out.println("SETTING 4 PLAYER GAME");
-        hearts = controller.getHearts();
-        handsPanels[0] = new PlayerHandPanel(controller.getMyHand().length);
+        mainPanel.removeAll();
+        deckPanel = new GameDeckPanel(controller);
+        mainPanel.add(deckPanel , BorderLayout.CENTER);
+        handsPanels[0] = new PlayerHandPanel(controller.getMyHand() , controller);
         handsPanels[1] = new PlayerHandPanel(controller.getPlayer1handSize());
         handsPanels[2] = new PlayerHandPanel(controller.getPlayer2handSize());
         handsPanels[3] = new PlayerHandPanel(controller.getPlayer3handSize());
@@ -37,36 +42,36 @@ public class GameFrame extends JFrame {
         mainPanel.add(handsPanels[1] , BorderLayout.EAST);
         mainPanel.add(handsPanels[2] , BorderLayout.NORTH);
         mainPanel.add(handsPanels[3] , BorderLayout.WEST);
-
+        this.repaint();
+        this.revalidate();
     }
 
     private void setupThreePlayerGame() {
-        System.out.println("SETTING 3 PLAYER GAME");
-        hearts = controller.getHearts();
-        handsPanels[0] = new PlayerHandPanel(controller.getMyHand().length);
+        mainPanel.removeAll();
+        deckPanel = new GameDeckPanel(controller);
+        mainPanel.add(deckPanel , BorderLayout.CENTER);
+        handsPanels[0] = new PlayerHandPanel(controller.getMyHand() , controller);
         handsPanels[1] = new PlayerHandPanel(controller.getPlayer1handSize());
         handsPanels[2] = new PlayerHandPanel(controller.getPlayer2handSize());
         mainPanel.add(handsPanels[0] , BorderLayout.SOUTH);
         mainPanel.add(handsPanels[1] , BorderLayout.EAST);
         mainPanel.add(handsPanels[2] , BorderLayout.NORTH);
-
+        repaint();
+        revalidate();
     }
 
     private void setupTwoPlayerGame() {
-        System.out.println("SETTING 2 PLAYER GAME");
-        hearts = controller.getHearts();
-        handsPanels[0] = new PlayerHandPanel(controller.getMyHand().length);
+        mainPanel.removeAll();
+        deckPanel = new GameDeckPanel(controller);
+        mainPanel.add(deckPanel , BorderLayout.CENTER);
+        handsPanels[0] = new PlayerHandPanel(controller.getMyHand() , controller);
         handsPanels[1] = new PlayerHandPanel(controller.getPlayer1handSize());
         mainPanel.add(handsPanels[0] , BorderLayout.SOUTH);
         mainPanel.add(handsPanels[1] , BorderLayout.NORTH);
+        this.repaint();
+        this.revalidate();
     }
 
-    public void updateGameFrame(){
-    }
-
-    private void setPanelInterface(){
-
-    }
 
     public void setDeckPanel(GameDeckPanel deckPanel) {
         this.deckPanel = deckPanel;
@@ -76,7 +81,6 @@ public class GameFrame extends JFrame {
         this.handsPanels = handsPanels;
     }
     public void setupTheGame(){
-        System.out.println(gameSize);
         switch (gameSize){
             case 2:
                 setupTwoPlayerGame();
@@ -89,4 +93,9 @@ public class GameFrame extends JFrame {
                 break;
         }
     }
+
+    public boolean isHost() {
+        return isHost;
+    }
+
 }

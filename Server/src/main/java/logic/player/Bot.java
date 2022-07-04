@@ -15,11 +15,7 @@ public class Bot extends Player implements Runnable{
 
     @Override
     public void run() {
-        for (int i = 0; i < hand.size(); i++) {
-            if (hand.get(i).getNumber() < leastCardNumber) {
-                leastCardNumber = hand.get(i).getNumber();
-            }
-        }
+        leastCardNumber = getLeastNumber().getNumber();
         try {
             Thread.sleep(leastCardNumber*3000);
         } catch (InterruptedException e) {

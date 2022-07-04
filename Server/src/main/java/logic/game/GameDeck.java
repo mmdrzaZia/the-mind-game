@@ -11,21 +11,20 @@ import java.util.Stack;
 public class GameDeck {
     private ArrayList<Card> deck;
     private Stack<Card> downCards;
-    private int numberOfStarCards = 2;
-    private int hearts;
+    //private int numberOfStarCards = 2;
 
     public GameDeck(){
         setDeck();
         downCards = new Stack<>();
     }
 
-    public int getNumberOfStarCards() {
-        return numberOfStarCards;
-    }
-
-    public void setNumberOfStarCards(int numberOfStarCards) {
-        this.numberOfStarCards = numberOfStarCards;
-    }
+//    public int getNumberOfStarCards() {
+//        return numberOfStarCards;
+//    }
+//
+//    public void setNumberOfStarCards(int numberOfStarCards) {
+//        this.numberOfStarCards = numberOfStarCards;
+//    }
 
     private void setDeck () {
         deck = new ArrayList<>();
