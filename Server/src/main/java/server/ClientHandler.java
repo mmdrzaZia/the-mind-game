@@ -134,9 +134,9 @@ public class ClientHandler implements Runnable{
                         game.playStar();
                         break;
                     case "NUMBER":
-                        if (data[3].charAt(0) == ' ')
-                            data[3] = data[3].substring(1);
-                        game.makeMove(Long.parseLong(data[3]) , player);
+                        if (data[2].charAt(0) == ' ')
+                            data[2] = data[2].substring(1);
+                        game.makeMove(Long.parseLong(data[2]) , player);
                         break;
                 }
                 break;
