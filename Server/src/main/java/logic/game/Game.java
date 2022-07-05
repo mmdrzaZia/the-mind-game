@@ -42,7 +42,7 @@ public class Game{
                 players.add(new Bot(this));
             }
         }
-        gameDeck.dealHand(players , round , gameSize);
+        //gameDeck.dealHand(players , round , gameSize);
         //playRound(true);
     }
 
@@ -70,6 +70,7 @@ public class Game{
             }
         }
         if (canGoToNextRound) {
+            status = GameStatus.PAUSED;
             round++;
             if (round == 3 || round == 6 || round == 9) {
                 hearts++;
@@ -79,7 +80,7 @@ public class Game{
                 status = GameStatus.WIN;
                 // send message to client
             }
-            playRound();
+            //playRound();
         } else {
             continueRound();
         }
@@ -90,10 +91,9 @@ public class Game{
     }
 
     public void playRound() {
-
+        gameDeck.dealHand(players, round, gameSize);
         for (int i = 0; i < players.size(); i++) {
             players.get(i).setNumberOfCards(round);
-            gameDeck.dealHand(players, round, gameSize);
             // give hand to players
             if (players.get(i) instanceof Bot) {
                 Thread thread = new Thread((Runnable) players.get(i));

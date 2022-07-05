@@ -123,10 +123,11 @@ public class ClientHandler implements Runnable{
             case "STATE":
                 String state = game.getState(player).toString();
                 sendMessage(state);
-                System.out.println("client["+id+"]s game round "+game.getRound() +" started");
+                System.out.println("State sent to client [" + id + "]");
                 break;
             case "PLAY_ROUND":
                 game.playRound();
+                System.out.println("client [" + id + "]s round started. round: " + game.getRound());
                 break;
             case "MOVE":
                 switch (data[1]){
