@@ -27,16 +27,16 @@ public abstract class Player {
         return hand;
     }
 
-    public Card getLeastNumber () {
-        int leastNumber = 100;
-        Card leastNumberCard = null;
+    public Card getLowestCard() {
+        int temp = 100;
+        Card lowestCard = null;
         for (int i = 0; i < hand.size(); i++) {
-            if (hand.get(i).getNumber() < leastNumber) {
-                leastNumber = hand.get(i).getNumber();
-                leastNumberCard = hand.get(i);
+            if (hand.get(i).getNumber() < temp) {
+                temp = hand.get(i).getNumber();
+                lowestCard = hand.get(i);
             }
         }
-        return leastNumberCard;
+        return lowestCard;
     }
 
 }

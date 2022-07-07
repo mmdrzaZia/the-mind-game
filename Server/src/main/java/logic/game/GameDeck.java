@@ -56,6 +56,7 @@ public class GameDeck {
     }
 
     public void dealHand(List<Player> players, int round) {
+        shuffleDeck();
         for (Player player : players){
             for (int i=0 ; i<round ; i++) {
                 player.getHand().add(dealCardFromTop());

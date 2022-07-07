@@ -50,9 +50,10 @@ public class Game{
     public void playStar (){
         leastNumbers = new ArrayList<>();
         for (int z = 0; z < players.size(); z++) {
-            players.get(z).getHand().remove(players.get(z).getLeastNumber());
-            leastNumbers.add(players.get(z).getLeastNumber().getNumber());
+            players.get(z).getHand().remove(players.get(z).getLowestCard());
+            leastNumbers.add(players.get(z).getLowestCard().getNumber());
         }
+        stars--;
     }
 
 
@@ -62,13 +63,19 @@ public class Game{
         gameDeck.dealCard(round , players);
     }*/
 
-    public void nextRound(){
-        boolean canGoToNextRound = true;
+    private boolean someoneHasCard(){
+        boolean someoneHasCard = false;
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).getHand().size() != 0) {
-                canGoToNextRound = false;
+                someoneHasCard = true;
             }
         }
+        return someoneHasCard;
+    }
+
+    public void nextRound(){
+        boolean canGoToNextRound = !someoneHasCard();
+
         if (canGoToNextRound) {
             status = GameStatus.PAUSED;
             round++;
@@ -199,5 +206,14 @@ public class Game{
 
     public int getStars() {
         return stars;
+    }
+
+    public String getLowestCards(Player myPlayer){
+        String lowest = "";
+        for (Player player : players){
+            lowest += ("-"+player.getLowestCard());
+            lowest.substring(0 , lowest.length()-1);
+        }
+        return lowest;
     }
 }
