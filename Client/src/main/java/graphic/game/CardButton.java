@@ -18,17 +18,15 @@ public class CardButton extends JButton{
         JLabel numberLabel = new JLabel(number+"");
         this.add(numberLabel);
         this.setPreferredSize(new Dimension(150  , 200));
-        this.setBackground(Color.BLACK);
-        this.setForeground(Color.WHITE);
     }
     public CardButton(String number){
         this.number = number;
         this.setLayout(new GridBagLayout());
         JLabel numberLabel = new JLabel(number+"");
         this.add(numberLabel);
-        this.setPreferredSize(new Dimension(50 , 100));
+        this.setPreferredSize(new Dimension(75 , 100));
         if (Integer.parseInt(number) == -1){
-            numberLabel.setText("?");
+            numberLabel.setText("The Mind");
             this.setBackground(Theme.getMainTheme().getSecondaryColor());
         }
     }

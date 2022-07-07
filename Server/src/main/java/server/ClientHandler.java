@@ -133,6 +133,7 @@ public class ClientHandler implements Runnable{
                 switch (data[1]){
                     case "STAR":
                         game.playStar();
+                        sendMessageToAllGamePlayers("");
                         break;
                     case "NUMBER":
                         if (data[2].charAt(0) == ' ')
