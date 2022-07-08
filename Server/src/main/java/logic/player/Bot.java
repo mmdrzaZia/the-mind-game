@@ -22,5 +22,6 @@ public class Bot extends Player implements Runnable{
             e.printStackTrace();
         }
         game.makeMove(leastCardNumber,this);
+        game.setMove(true);
     }
 }
