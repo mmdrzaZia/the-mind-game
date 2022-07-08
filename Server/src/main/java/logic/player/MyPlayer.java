@@ -1,6 +1,5 @@
 package logic.player;
 
-import logic.game.State;
 import server.ClientHandler;
 
 public class MyPlayer extends Player{
