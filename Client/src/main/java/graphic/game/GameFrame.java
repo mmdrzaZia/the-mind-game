@@ -36,8 +36,10 @@ public class GameFrame extends JFrame{
         mainPanel.add(deckPanel , BorderLayout.CENTER);
         handsPanels[0] = new PlayerHandPanel(controller.getMyHand() , controller);
         handsPanels[1] = new PlayerHandPanel(controller.getPlayer1handSize());
+        handsPanels[1].setPreferredSize(new Dimension(100 , 500));
         handsPanels[2] = new PlayerHandPanel(controller.getPlayer2handSize());
         handsPanels[3] = new PlayerHandPanel(controller.getPlayer3handSize());
+        handsPanels[3].setPreferredSize(new Dimension(100 , 500));
         mainPanel.add(handsPanels[0] , BorderLayout.SOUTH);
         mainPanel.add(handsPanels[1] , BorderLayout.EAST);
         mainPanel.add(handsPanels[2] , BorderLayout.NORTH);

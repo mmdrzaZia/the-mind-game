@@ -20,10 +20,11 @@ public class Bot extends Player implements Runnable{
             if (!hand.isEmpty()) {
                 leastCardNumber = getLowestCard().getNumber();
                 try {
-                    Thread.sleep(leastCardNumber * 3000);
+                    Thread.sleep(leastCardNumber * 500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                System.out.println("Bot making move: " + leastCardNumber);
                 game.makeMove(leastCardNumber, this);
             }
         }

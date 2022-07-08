@@ -30,6 +30,7 @@ public abstract class Player {
     public Card getLowestCard() {
         int temp = 100;
         Card lowestCard = null;
+        if (hand.isEmpty()) return new Card(0);
         for (int i = 0; i < hand.size(); i++) {
             if (hand.get(i).getNumber() < temp) {
                 temp = hand.get(i).getNumber();

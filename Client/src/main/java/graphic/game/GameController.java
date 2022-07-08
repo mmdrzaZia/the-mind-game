@@ -36,7 +36,7 @@ public class GameController extends Controller {
                 readState();
                 break;
             case "LOWEST_CARDS":
-                //JOptionPane.showMessageDialog(null , "");
+                JOptionPane.showMessageDialog(null , data[1]);
                 break;
         }
     }

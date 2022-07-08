@@ -38,7 +38,7 @@ public class Game{
         botThreads = new ArrayList<>();
 
         if (players.size() != gameSize){
-            for (int i=0 ; i < gameSize+1-players.size();i++){
+            for (int i=0 ; i < gameSize+2-players.size();i++){
                 players.add(new Bot(this));
             }
         }
@@ -48,10 +48,12 @@ public class Game{
     public void playStar (){
         leastNumbers = new ArrayList<>();
         for (int z = 0; z < players.size(); z++) {
-            players.get(z).getHand().remove(players.get(z).getLowestCard());
             leastNumbers.add(players.get(z).getLowestCard().getNumber());
+            players.get(z).getHand().remove(players.get(z).getLowestCard());
+
         }
         stars--;
+        nextRound();
     }
 
     private boolean someoneHasCard(){
@@ -96,16 +98,6 @@ public class Game{
             }
         }
     }
-
-//    public void continueRound(){
-//        for (int i = 0; i < players.size(); i++) {
-//            if (players.get(i) instanceof Bot) {
-//                Thread thread = new Thread((Runnable) players.get(i));
-//                thread.run();
-//                botThreads.add(thread);
-//            }
-//        }
-//    }
 
    public State getState(MyPlayer player){
         gameState = new State(this , player);
@@ -182,6 +174,14 @@ public class Game{
 
     public int getStars() {
         return stars;
+    }
+
+    public String getLowestCards(){
+        String cards = "";
+        for (Player player : players){
+            cards += player.getLowestCard() +",";
+        }
+        return cards.substring(0,cards.length()-1);
     }
 
 //    public String getLowestCards(Player myPlayer){

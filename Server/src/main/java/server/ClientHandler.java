@@ -63,12 +63,6 @@ public class ClientHandler implements Runnable{
         }
     }
 
-//    public void sendState(){
-//        Gson gson = new Gson();
-//        String message = gson.toJson(game.getState(player));
-//        sendMessage("state :" + message);
-//    }
-
 
     public void createNewGame(){
         //todo
@@ -136,8 +130,8 @@ public class ClientHandler implements Runnable{
             case "MOVE":
                 switch (data[2]){
                     case "STAR":
+                        sendMessageToAllGamePlayers("LOWEST_CARDS-" +game.getLowestCards());
                         game.playStar();
-                        sendMessageToAllGamePlayers("");
                         break;
                     case "NUMBER":
                         if (data[3].charAt(0) == ' ')

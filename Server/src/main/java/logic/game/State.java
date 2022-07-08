@@ -36,11 +36,11 @@ public class State {
         //STATE-[STATUS]-[DOWN_CARDS]-[MY_PLAYER_HAND]-[HEARTS]-[STARS]-[ROUND]
         switch (gameSize){
             case 2:
-                return "STATE-"+game.getStatus()+"-"+down+"-"+handString+"-"+game.getHearts()+"-"+game.getStars()+"-"+game.getRound()+"-"+numberOfCards.get(keyArray[0]);
+                return "STATE-"+game.getStatus()+"-"+down+"-"+handString+"-"+game.getHearts()+"-"+game.getStars()+"-"+game.getRound()+"-"+numberOfCards.get(keyArray[1]);
             case 3:
-                return "STATE-"+game.getStatus()+"-"+down+"-"+handString+"-"+game.getHearts()+"-"+game.getStars()+"-"+game.getRound()+"-"+numberOfCards.get(keyArray[0])+"-"+numberOfCards.get(keyArray[1]);
+                return "STATE-"+game.getStatus()+"-"+down+"-"+handString+"-"+game.getHearts()+"-"+game.getStars()+"-"+game.getRound()+"-"+numberOfCards.get(keyArray[1])+"-"+numberOfCards.get(keyArray[2]);
             case 4:
-                return "STATE-"+game.getStatus()+"-"+down+"-"+handString+"-"+game.getHearts()+"-"+game.getStars()+"-"+game.getRound()+"-"+numberOfCards.get(keyArray[0])+"-"+numberOfCards.get(keyArray[1])+"-"+numberOfCards.get(keyArray[2]);
+                return "STATE-"+game.getStatus()+"-"+down+"-"+handString+"-"+game.getHearts()+"-"+game.getStars()+"-"+game.getRound()+"-"+numberOfCards.get(keyArray[1])+"-"+numberOfCards.get(keyArray[2])+"-"+numberOfCards.get(keyArray[3]);
             default:
                 System.out.println("GAME SIZE IS NOT RIGHT!!!!!");
                 return null;
