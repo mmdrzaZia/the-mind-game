@@ -61,11 +61,11 @@ public class ClientHandler implements Runnable{
         }
     }
 
-    public void sendState(){
-        Gson gson = new Gson();
-        String message = gson.toJson(game.getState(player));
-        sendMessage("state :" + message);
-    }
+//    public void sendState(){
+//        Gson gson = new Gson();
+//        String message = gson.toJson(game.getState(player));
+//        sendMessage("state :" + message);
+//    }
 
 
     public void createNewGame(){

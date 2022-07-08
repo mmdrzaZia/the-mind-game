@@ -55,14 +55,14 @@ public class GameDeck {
         return card;
     }
 
-    public void dealHand(List<Player> players, int round) {
-        shuffleDeck();
-        for (Player player : players){
-            for (int i=0 ; i<round ; i++) {
-                player.getHand().add(dealCardFromTop());
-            }
-        }
-    }
+//    public void dealHand(List<Player> players, int round) {
+//        shuffleDeck();
+//        for (Player player : players){
+//            for (int i=0 ; i<round ; i++) {
+//                player.getHand().add(dealCardFromTop());
+//            }
+//        }
+//    }
 
     public void dealHand(List<Player> players, int round,int gameSize){
         for (Player player : players){
@@ -73,15 +73,13 @@ public class GameDeck {
         }
     }
 
-    public void getCardsFromPlayers(List<Player> players){
-        for (Player player : players){
-            deck.addAll(player.getHand());
-            player.getHand().clear();
-        }
-        shuffleDeck();
-    }
-
-
+//    public void getCardsFromPlayers(List<Player> players){
+//        for (Player player : players){
+//            deck.addAll(player.getHand());
+//            player.getHand().clear();
+//        }
+//        shuffleDeck();
+//    }
 }
 
 

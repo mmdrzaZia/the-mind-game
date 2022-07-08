@@ -49,12 +49,12 @@ public class State {
     }
 
 
-    public void setDownCards(Stack<Card> downCards) {
-        this.downCards = downCards;
-    }
-
-
-    public HashMap<Player, Integer> getNumberOfCards() {
-        return numberOfCards;
-    }
+//    public void setDownCards(Stack<Card> downCards) {
+//        this.downCards = downCards;
+//    }
+//
+//
+//    public HashMap<Player, Integer> getNumberOfCards() {
+//        return numberOfCards;
+//    }
 }

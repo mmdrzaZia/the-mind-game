@@ -7,7 +7,7 @@ public class MyPlayer extends Player{
 
     private final ClientHandler handler;
     private boolean hasStarCard;
-    private State state;
+    //private State state;
 
     public MyPlayer(String name , ClientHandler handler){
         this.name = name;
@@ -22,7 +22,7 @@ public class MyPlayer extends Player{
         this.hasStarCard = hasStarCard;
     }
 
-    public boolean isHasStarCard() {
-        return hasStarCard;
-    }
+//    public boolean isHasStarCard() {
+//        return hasStarCard;
+//    }
 }

@@ -19,7 +19,6 @@ public class Game{
     private int stars = 2;
     private ArrayList<Integer> leastNumbers;
     private List<Thread> botThreads;
-    private boolean move;
 
     public Game(MyPlayer host, int gameSize) {
 
@@ -43,8 +42,6 @@ public class Game{
                 players.add(new Bot(this));
             }
         }
-        //gameDeck.dealHand(players , round , gameSize);
-        //playRound(true);
     }
 
 
@@ -56,13 +53,6 @@ public class Game{
         }
         stars--;
     }
-
-
-
-    /*private boolean playRound(){
-        gameDeck.getPlayersCards();
-        gameDeck.dealCard(round , players);
-    }*/
 
     private boolean someoneHasCard(){
         boolean someoneHasCard = false;
@@ -86,11 +76,7 @@ public class Game{
                 giveStarCardToPlayers();
             } else if (round == 13) {
                 status = GameStatus.WIN;
-                // send message to client
             }
-            //playRound();
-        } else {
-            //continueRound();
         }
     }
 
@@ -103,26 +89,23 @@ public class Game{
         status = GameStatus.RUNNING;
         for (int i = 0; i < players.size(); i++) {
             players.get(i).setNumberOfCards(round);
-            // give hand to players
             if (players.get(i) instanceof Bot) {
                 Thread thread = new Thread((Runnable) players.get(i));
                 botThreads.add(thread);
                 thread.start();
             }
         }
-        //while (!move) {}
     }
 
-    public void continueRound(){
-        for (int i = 0; i < players.size(); i++) {
-            // give hand to players
-            if (players.get(i) instanceof Bot) {
-                Thread thread = new Thread((Runnable) players.get(i));
-                thread.run();
-                botThreads.add(thread);
-            }
-        }
-    }
+//    public void continueRound(){
+//        for (int i = 0; i < players.size(); i++) {
+//            if (players.get(i) instanceof Bot) {
+//                Thread thread = new Thread((Runnable) players.get(i));
+//                thread.run();
+//                botThreads.add(thread);
+//            }
+//        }
+//    }
 
    public State getState(MyPlayer player){
         gameState = new State(this , player);
@@ -164,22 +147,9 @@ public class Game{
             hearts--;
             if (hearts == 0) {
                 status = GameStatus.LOSE;
-                // send finish message to client
-
             }
         }
-
-        /*for (int i = 0; i < botThreads.size(); i++) {
-            if (!botThreads.get(i).isInterrupted()) {
-                botThreads.get(i).interrupt();
-            }
-        }*/
         nextRound();
-    }
-
-
-    public void setMove(boolean move) {
-        this.move = move;
     }
 
     public MyPlayer getHost() {
@@ -194,9 +164,9 @@ public class Game{
         return players;
     }
 
-    public State getGameState() {
-        return gameState;
-    }
+//    public State getGameState() {
+//        return gameState;
+//    }
 
     public int getGameSize() {
         return gameSize;
@@ -208,18 +178,18 @@ public class Game{
 
     public int getHearts() {return hearts;}
 
-    public void setHearts(int hearts) {this.hearts = hearts;}
+    //public void setHearts(int hearts) {this.hearts = hearts;}
 
     public int getStars() {
         return stars;
     }
 
-    public String getLowestCards(Player myPlayer){
-        String lowest = "";
-        for (Player player : players){
-            lowest += ("-"+player.getLowestCard());
-            lowest.substring(0 , lowest.length()-1);
-        }
-        return lowest;
-    }
+//    public String getLowestCards(Player myPlayer){
+//        String lowest = "";
+//        for (Player player : players){
+//            lowest += ("-"+player.getLowestCard());
+//            lowest.substring(0 , lowest.length()-1);
+//        }
+//        return lowest;
+//    }
 }
