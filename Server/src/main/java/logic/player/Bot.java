@@ -17,13 +17,15 @@ public class Bot extends Player implements Runnable{
     @Override
     public void run() {
         while (game.getStatus().equals(GameStatus.RUNNING)) {
-            leastCardNumber = getLowestCard().getNumber();
-            try {
-                Thread.sleep(leastCardNumber * 3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (!hand.isEmpty()) {
+                leastCardNumber = getLowestCard().getNumber();
+                try {
+                    Thread.sleep(/*leastCardNumber **/ 4000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                game.makeMove(leastCardNumber, this);
             }
-            game.makeMove(leastCardNumber, this);
             //game.setMove(true);
         }
     }

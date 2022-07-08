@@ -19,7 +19,7 @@ public class Game{
     private int stars = 2;
     private ArrayList<Integer> leastNumbers;
     private List<Thread> botThreads;
-    //private boolean move;
+    private boolean move;
 
     public Game(MyPlayer host, int gameSize) {
 
@@ -90,7 +90,7 @@ public class Game{
             }
             //playRound();
         } else {
-            continueRound();
+            //continueRound();
         }
     }
 
@@ -110,13 +110,7 @@ public class Game{
                 thread.start();
             }
         }
-        /*while (!move) {}
-        for (int j = 0; j < botThreads.size(); j++) {
-            if (!botThreads.get(j).isInterrupted()) {
-                botThreads.get(j).interrupt();
-            }
-        }
-        move = false;*/
+        //while (!move) {}
     }
 
     public void continueRound(){
@@ -174,18 +168,19 @@ public class Game{
 
             }
         }
-        for (int i = 0; i < botThreads.size(); i++) {
+
+        /*for (int i = 0; i < botThreads.size(); i++) {
             if (!botThreads.get(i).isInterrupted()) {
                 botThreads.get(i).interrupt();
             }
-        }
+        }*/
         nextRound();
     }
 
 
-    /*public void setMove(boolean move) {
+    public void setMove(boolean move) {
         this.move = move;
-    }*/
+    }
 
     public MyPlayer getHost() {
         return host;
