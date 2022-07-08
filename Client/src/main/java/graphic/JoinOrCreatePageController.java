@@ -13,8 +13,8 @@ public class JoinOrCreatePageController extends Controller{
     private JoinOrCreatePage frame;
     private int gameSize;
 
-    public JoinOrCreatePageController(PrintWriter printWriter, BufferedReader bufferedReader) {
-        super(printWriter, bufferedReader);
+    public JoinOrCreatePageController(PrintWriter printWriter, BufferedReader bufferedReader, String token) {
+        super(printWriter, bufferedReader, token);
     }
 
 

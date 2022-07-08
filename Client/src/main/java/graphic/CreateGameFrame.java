@@ -47,7 +47,7 @@ public class CreateGameFrame extends JFrame implements ActionListener {
             int gameSize = sizeOfGame.getSelectedIndex()+2;
             controller.createGame(gameSize);
             this.dispose();
-            WaitingPageController waitingPageController = new WaitingPageController(controller.getPrintWriter(), controller.getBufferedReader());
+            WaitingPageController waitingPageController = new WaitingPageController(controller.getPrintWriter(), controller.getBufferedReader(),controller.token );
             WaitingPage waitingPage = new WaitingPage(waitingPageController , gameSize ,true);
         }
     }

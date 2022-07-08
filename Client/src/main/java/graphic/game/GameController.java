@@ -5,7 +5,6 @@ import graphic.Controller;
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.*;
 
 public class GameController extends Controller {
@@ -24,8 +23,8 @@ public class GameController extends Controller {
     private GameFrame gameFrame;
 
 
-    public GameController(PrintWriter printWriter, BufferedReader bufferedReader) {
-        super(printWriter, bufferedReader);
+    public GameController(PrintWriter printWriter, BufferedReader bufferedReader, String token) {
+        super(printWriter, bufferedReader, token);
     }
 
     @Override

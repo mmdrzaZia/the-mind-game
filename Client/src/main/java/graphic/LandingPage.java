@@ -46,7 +46,7 @@ public class LandingPage extends JFrame implements ActionListener {
                 controller.setName(textField.getText());
                 this.dispose();
                 SwingUtilities.invokeLater(()-> {
-                    JoinOrCreatePageController joinOrCreatePageController = new JoinOrCreatePageController(controller.getPrintWriter(), controller.getBufferedReader());
+                    JoinOrCreatePageController joinOrCreatePageController = new JoinOrCreatePageController(controller.getPrintWriter(), controller.getBufferedReader(), controller.token);
                     JoinOrCreatePage joinOrCreatePage = new JoinOrCreatePage(joinOrCreatePageController);
                 });
             }

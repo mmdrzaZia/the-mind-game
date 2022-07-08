@@ -3,7 +3,6 @@ package graphic;
 import graphic.game.GameController;
 import graphic.game.GameFrame;
 
-import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.List;
@@ -11,8 +10,8 @@ import java.util.List;
 public class WaitingPageController extends Controller{
     private WaitingPage frame;
 
-    public WaitingPageController(PrintWriter printWriter, BufferedReader bufferedReader) {
-        super(printWriter, bufferedReader);
+    public WaitingPageController(PrintWriter printWriter, BufferedReader bufferedReader, String token) {
+        super(printWriter, bufferedReader, token);
 
     }
     public void startGame(){
@@ -33,7 +32,7 @@ public class WaitingPageController extends Controller{
                 break;
             }
         }
-        GameController gameController = new GameController(this.getPrintWriter(), this.getBufferedReader());
+        GameController gameController = new GameController(this.getPrintWriter(), this.getBufferedReader(), token);
         gameController.setGameSize(frame.getGameSize());
         GameFrame gameFrame = new GameFrame(frame.getGameSize(),gameController , true);
         return null;

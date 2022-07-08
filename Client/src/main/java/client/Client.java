@@ -2,17 +2,16 @@ package client;
 
 import graphic.LandingPage;
 import graphic.LandingPageController;
-import graphic.Theme;
 
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Client implements Runnable{
     private Socket socket;
     private BufferedReader bufferedReader;
     private PrintWriter printWriter;
+    private String token;
 
 
     private void init() {
@@ -20,7 +19,8 @@ public class Client implements Runnable{
             socket = new Socket("localhost" , 8080);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             printWriter = new PrintWriter(socket.getOutputStream());
-            LandingPageController landingPageController = new LandingPageController(printWriter,bufferedReader);
+            token = bufferedReader.readLine();
+            LandingPageController landingPageController = new LandingPageController(printWriter,bufferedReader, token);
             LandingPage landingPage = new LandingPage(landingPageController);
         }catch (IOException e){
             e.printStackTrace();

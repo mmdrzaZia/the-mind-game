@@ -17,7 +17,7 @@ public class ClientHandler implements Runnable{
     private static LinkedHashMap<Game , Integer> games = new LinkedHashMap<>();
     private static int idCounter = 0;
     private Socket socket;
-
+    private String token;
     private int id;
     private BufferedReader bufferedReader;
     private PrintWriter printWriter;
@@ -32,9 +32,11 @@ public class ClientHandler implements Runnable{
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.printWriter = new PrintWriter(socket.getOutputStream());
+            token = TokenGenerator.generateToken();
+            printWriter.println(token);
+            printWriter.flush();
         }catch (IOException e){
             e.printStackTrace();
-            //tODO : should write a function that close everything.
         }
         this.id = idCounter;
         addToClientHandlers(this);
@@ -97,22 +99,24 @@ public class ClientHandler implements Runnable{
     private void readData(String command){
         if (command == null) return;
         String[] data = command.split("-");
-        switch (data[0]){
+            if (!data[0].equals(token)) return;
+
+        switch (data[1]){
             case "SEND_ME_WAITING_GAMES":
                 sendWaitingGames();
                 System.out.println("sent waiting games to client["+id+"]");
                 break;
             case "SET_NAME":
-                player = new MyPlayer(data[1] , this);
+                player = new MyPlayer(data[2] , this);
                 System.out.println("client["+id+"] : name set to " + data[1]);
                 break;
             case "CREATE_GAME":
-                gameSize = Integer.parseInt(data[1]);
+                gameSize = Integer.parseInt(data[2]);
                 createNewGame();
                 System.out.println("size of client["+id+"]'s game set to "+ gameSize);
                 break;
             case "JOIN_GAME":
-                joinGame(Integer.parseInt(data[1]));
+                joinGame(Integer.parseInt(data[2]));
                 System.out.println("client["+id+"] joined client["+data[1]+"]'s game." );
                 break;
             case "INITIALIZE_GAME":
@@ -130,15 +134,15 @@ public class ClientHandler implements Runnable{
                 System.out.println("client [" + id + "]s round started. round: " + game.getRound());
                 break;
             case "MOVE":
-                switch (data[1]){
+                switch (data[2]){
                     case "STAR":
                         game.playStar();
                         sendMessageToAllGamePlayers("");
                         break;
                     case "NUMBER":
-                        if (data[2].charAt(0) == ' ')
-                            data[2] = data[2].substring(1);
-                        game.makeMove(Long.parseLong(data[2]) , player);
+                        if (data[3].charAt(0) == ' ')
+                            data[3] = data[3].substring(1);
+                        game.makeMove(Long.parseLong(data[3]) , player);
                         break;
                 }
                 break;

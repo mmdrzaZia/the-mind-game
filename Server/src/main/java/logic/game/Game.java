@@ -38,7 +38,7 @@ public class Game{
         botThreads = new ArrayList<>();
 
         if (players.size() != gameSize){
-            for (int i=0 ; i < gameSize-players.size();i++){
+            for (int i=0 ; i < gameSize+1-players.size();i++){
                 players.add(new Bot(this));
             }
         }

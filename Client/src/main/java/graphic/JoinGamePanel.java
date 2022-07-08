@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 public class JoinGamePanel extends JPanel implements ActionListener {
     private String hostId;
@@ -38,7 +37,7 @@ public class JoinGamePanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == joinButton){
             controller.joinGame(Integer.parseInt(hostId));
-            WaitingPageController waitingPageController = new WaitingPageController(controller.getPrintWriter() , controller.getBufferedReader());
+            WaitingPageController waitingPageController = new WaitingPageController(controller.getPrintWriter() , controller.getBufferedReader(), controller.token );
             WaitingPage waitingPage = new WaitingPage(waitingPageController , controller.getGameSize() , false);
         }
     }
