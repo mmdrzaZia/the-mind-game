@@ -1,6 +1,7 @@
 package logic.player;
 
 import logic.game.Game;
+import logic.game.GameStatus;
 
 public class Bot extends Player implements Runnable{
     private static int id;
@@ -15,13 +16,15 @@ public class Bot extends Player implements Runnable{
 
     @Override
     public void run() {
-        leastCardNumber = getLowestCard().getNumber();
-        try {
-            Thread.sleep(leastCardNumber*3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while (game.getStatus().equals(GameStatus.RUNNING)) {
+            leastCardNumber = getLowestCard().getNumber();
+            try {
+                Thread.sleep(leastCardNumber * 3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            game.makeMove(leastCardNumber, this);
+            //game.setMove(true);
         }
-        game.makeMove(leastCardNumber,this);
-        game.setMove(true);
     }
 }
