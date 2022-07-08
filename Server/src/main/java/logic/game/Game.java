@@ -156,10 +156,6 @@ public class Game{
         return players;
     }
 
-//    public State getGameState() {
-//        return gameState;
-//    }
-
     public int getGameSize() {
         return gameSize;
     }
@@ -169,8 +165,6 @@ public class Game{
     }
 
     public int getHearts() {return hearts;}
-
-    //public void setHearts(int hearts) {this.hearts = hearts;}
 
     public int getStars() {
         return stars;
@@ -183,13 +177,4 @@ public class Game{
         }
         return cards.substring(0,cards.length()-1);
     }
-
-//    public String getLowestCards(Player myPlayer){
-//        String lowest = "";
-//        for (Player player : players){
-//            lowest += ("-"+player.getLowestCard());
-//            lowest.substring(0 , lowest.length()-1);
-//        }
-//        return lowest;
-//    }
 }

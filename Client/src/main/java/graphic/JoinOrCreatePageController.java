@@ -17,9 +17,6 @@ public class JoinOrCreatePageController extends Controller{
         super(printWriter, bufferedReader, token);
     }
 
-
-    //Takes the current Games from server.
-    //tODO : server : getCurrent Games!
     public List<String> getCurrentGames(){
         try {
             sendMessageToServer("SEND_ME_WAITING_GAMES");
@@ -40,7 +37,6 @@ public class JoinOrCreatePageController extends Controller{
     }
 
     public void joinGame(int hostId){
-        //this.done();
         frame.dispose();
         sendMessageToServer("JOIN_GAME-"+hostId);
         try {

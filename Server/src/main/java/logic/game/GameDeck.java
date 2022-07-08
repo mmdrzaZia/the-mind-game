@@ -11,20 +11,11 @@ import java.util.Stack;
 public class GameDeck {
     private ArrayList<Card> deck;
     private Stack<Card> downCards;
-    //private int numberOfStarCards = 2;
 
     public GameDeck(){
         setDeck();
         downCards = new Stack<>();
     }
-
-//    public int getNumberOfStarCards() {
-//        return numberOfStarCards;
-//    }
-//
-//    public void setNumberOfStarCards(int numberOfStarCards) {
-//        this.numberOfStarCards = numberOfStarCards;
-//    }
 
     private void setDeck () {
         deck = new ArrayList<>();
@@ -55,15 +46,6 @@ public class GameDeck {
         return card;
     }
 
-//    public void dealHand(List<Player> players, int round) {
-//        shuffleDeck();
-//        for (Player player : players){
-//            for (int i=0 ; i<round ; i++) {
-//                player.getHand().add(dealCardFromTop());
-//            }
-//        }
-//    }
-
     public void dealHand(List<Player> players, int round,int gameSize){
         for (Player player : players){
             for (int i=0 ; i<round ; i++) {
@@ -72,14 +54,6 @@ public class GameDeck {
             if (player instanceof MyPlayer) ((MyPlayer) player).setHasStarCard(true);
         }
     }
-
-//    public void getCardsFromPlayers(List<Player> players){
-//        for (Player player : players){
-//            deck.addAll(player.getHand());
-//            player.getHand().clear();
-//        }
-//        shuffleDeck();
-//    }
 }
 
 

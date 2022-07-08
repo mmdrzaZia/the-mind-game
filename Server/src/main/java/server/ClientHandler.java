@@ -65,7 +65,6 @@ public class ClientHandler implements Runnable{
 
 
     public void createNewGame(){
-        //todo
         game = new Game(player , gameSize);
         games.put(game , 1);
     }
@@ -180,6 +179,7 @@ public class ClientHandler implements Runnable{
         }
         return null;
     }
+
     public void sendMessageToAllGamePlayers(String message){
         for (Player player : game.getPlayers()){
             if (player instanceof MyPlayer){

@@ -23,7 +23,7 @@ public class State {
             numberOfCards.put(p,p.getHand().size());
         }
     }
-    //todo
+
     @Override
     public String toString() {
         Set<Player> keySet = numberOfCards.keySet();
@@ -47,14 +47,4 @@ public class State {
         }
 
     }
-
-
-//    public void setDownCards(Stack<Card> downCards) {
-//        this.downCards = downCards;
-//    }
-//
-//
-//    public HashMap<Player, Integer> getNumberOfCards() {
-//        return numberOfCards;
-//    }
 }

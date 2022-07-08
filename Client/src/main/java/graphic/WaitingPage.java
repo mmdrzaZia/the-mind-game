@@ -42,7 +42,6 @@ public class WaitingPage extends JFrame implements ActionListener {
         animationPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         animationPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
         mainPanel.add(animationPanel);
-        //mainPanel.add(Box.createRigidArea(new Dimension(50,10)));
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.setHorizontalAlignment(SwingConstants.CENTER);
         startButton.setPreferredSize(new Dimension(150 , 25));

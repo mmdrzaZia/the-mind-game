@@ -2,7 +2,6 @@ import client.Client;
 import graphic.Theme;
 
 import javax.swing.*;
-import java.net.ConnectException;
 
 public class ClientMain {
     public static void main(String[] args) {

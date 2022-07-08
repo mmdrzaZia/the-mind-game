@@ -42,14 +42,9 @@ public class WaitingPageController extends Controller{
         frame.getPlayersJoinedLabel().setText(chunks.get(chunks.size()-1)+" players joined!");
     }
 
-
-
-
-
     public String getCommand() {
         return command;
     }
-
 
     public void setFrame(WaitingPage frame) {
         this.frame = frame;
