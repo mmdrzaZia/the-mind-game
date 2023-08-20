@@ -1,18 +1,17 @@
 package logic.game;
 
 public class Card {
-    private CardType type;
-    private int id;
-    public Card(CardType type,int id){
-        this.id = id;
-        this.type = type;
+    private int number;
+
+    public Card(int number){
+        this.number = number;
+    }
+    public int getNumber() {
+        return number;
     }
 
-    public CardType getType() {
-        return type;
-    }
-
-    public int getId() {
-        return id;
+    @Override
+    public String toString() {
+        return number+"";
     }
 }
